@@ -143,26 +143,29 @@
         top: -38%;        /* Pushes it up to align with the envelope top */
     }
 
-    .butterfly-img {
-        width: 35px;
+/* 1. INCREASE BUTTERFLY SIZE FOR MOBILE */
+    .butterfly-img { 
+        width: 65px; /* Increased from 35px so they are visible */
+    }
+    
+    .b2 {
+        width: 50px; /* Keep the second one slightly smaller for variety */
     }
 
-    .leaves-container {
-        background-size: 150px;
+    /* 2. TIGHTEN FLIGHT PATHS SO THEY STAY NEAR THE FLOWERS */
+    @keyframes flyAroundFlowersLeft {
+        0%   { transform: translate(-130px, -100px) rotate(0deg); }
+        33%  { transform: translate(-100px, -140px) rotate(20deg); }
+        66%  { transform: translate(-150px, -60px) rotate(-10deg); }
+        100% { transform: translate(-130px, -100px) rotate(0deg); }
     }
 
-    body {
-        background-size: 150% auto;
+    @keyframes flyAroundFlowersRight {
+        0%   { transform: translate(110px, -80px) rotate(0deg); }
+        50%  { transform: translate(140px, -130px) rotate(-30deg); }
+        100% { transform: translate(110px, -80px) rotate(0deg); }
     }
-            @keyframes flyAroundFlowersLeft {
-                0%   { transform: translate(-120px, -80px) rotate(0deg); }
-                100% { transform: translate(-120px, -80px) rotate(0deg); }
-            }
-            @keyframes flyAroundFlowersRight {
-                0%   { transform: translate(120px, -80px) rotate(0deg); }
-                100% { transform: translate(120px, -80px) rotate(0deg); }
-            }
-        }
+}
         
     </style>
 </head>
@@ -183,6 +186,7 @@
 </body>
 
 </html>
+
 
 
 
