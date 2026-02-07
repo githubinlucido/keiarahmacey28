@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keiarah Macey</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
+                url('wallpaper.svg') no-repeat center center fixed;
+            background-size: cover; 
+            overflow: hidden;
+        }
+
+        .main-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        /* 1. LETTERING */
+        .header-logo {
+            width: 50%;
+            max-width: 350px;
+            margin-bottom: 20px;
+            z-index: 10;
+            clip-path: inset(0 100% 0 0); 
+            animation: typeLettering 2.5s ease-in-out forwards;
+        }
+
+        @keyframes typeLettering {
+            to { clip-path: inset(0 0 0 0); }
+        }
+
+        /* 2. ENVELOPE */
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInEnvelope 1s ease-out forwards;
+            animation-delay: 1.5s; 
+        }
+
+        @keyframes fadeInEnvelope {
+            to { opacity: 1; }
+        }
+
+        .envelope-base {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+        }
+
+        /* 3. FLOWERS */
+        .flowers-overlay {
+            position: absolute;
+            top: -34%; 
+            left: -17%;
+            width: 125%; 
+            height: auto;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0;
+            animation: zoomFadeIn 1s ease-out forwards;
+            animation-delay: 2.2s; 
+        }
+
+        @keyframes zoomFadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 4. UPDATED BUTTERFLY FLYPATHS (Outside the envelope) */
+        .butterfly-img {
+            position: absolute;
+            width: 400px;
+            height: auto;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+/* Butterfly 1: Pastel Pink/Lavender */
+.b1 {
+    animation: butterflyFade 1s forwards 3.2s, flyAroundFlowersLeft 10s infinite ease-in-out;
+    /* Low saturation makes it pastel, high brightness makes it soft */
+    filter: hue-rotate(-400deg) saturate(0.6) brightness(1.4);
+}
+
+/* Butterfly 2: Pastel Peach/Cream */
+.b2 {
+    width: 400px;
+    animation: butterflyFade 1s forwards 3.8s, flyAroundFlowersRight 12s infinite ease-in-out;
+    /* Low saturation + high brightness = muted pastel look */
+    filter: hue-rotate(40deg) saturate(0.5) brightness(1.5);
+}
+
+        @keyframes butterflyFade {
+            to { opacity: 1; }
+        }
+
+        /* Path for Top-Left corner */
+        @keyframes flyAroundFlowersLeft {
+            0%   { transform: translate(-320px, 220px) rotate(0deg); }
+            33%  { transform: translate(-280px, 280px) rotate(0deg); }
+            66%  { transform: translate(-350px, 180px) rotate(-10deg); }
+            100% { transform: translate(-320px, 220px) rotate(0deg); }
+        }
+
+        /* Path for Top-Right corner */
+        @keyframes flyAroundFlowersRight {
+            0%   { transform: translate(220px, -100px) rotate(0deg); }
+            50%  { transform: translate(260px, -180px) rotate(0deg); }
+            100% { transform: translate(220px, -100px) rotate(0deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header-logo { width: 70%; }
+            .flowers-overlay { width: 120%; left: -10%; top: -8%; }
+            .butterfly-img { width: 35px; }
+            /* Adjusted mobile flight paths so they don't go off-screen */
+            @keyframes flyAroundFlowersLeft {
+                0%   { transform: translate(-120px, -80px) rotate(0deg); }
+                100% { transform: translate(-120px, -80px) rotate(0deg); }
+            }
+            @keyframes flyAroundFlowersRight {
+                0%   { transform: translate(120px, -80px) rotate(0deg); }
+                100% { transform: translate(120px, -80px) rotate(0deg); }
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <img src="keiarahmacey.svg" alt="Keiarah Macey Name" class="header-logo">
+
+        <div class="envelope-container">
+            <img src="butterfly-freedom.gif" class="butterfly-img b1" alt="Butterfly">
+            <img src="butterfly-freedom.gif" class="butterfly-img b2" alt="Butterfly">
+
+            <img src="envelope.svg" alt="Envelope" class="envelope-base">
+            <img src="flowers.svg" alt="Floral Accents" class="flowers-overlay">
+        </div>
+    </div>
+
+</body>
+</html>
