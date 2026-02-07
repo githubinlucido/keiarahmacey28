@@ -136,9 +136,24 @@
 
         @media (max-width: 600px) {
             .header-logo { width: 70%; }
-            .flowers-overlay { width: 120%; left: -10%; top: -8%; }
-            .butterfly-img { width: 35px; }
-            /* Adjusted mobile flight paths so they don't go off-screen */
+           /* ADJUSTED FOR MOBILE ALIGNMENT */
+    .flowers-overlay {
+        width: 135%;      /* Slightly wider to wrap the envelope */
+        left: -17.5%;     /* Centers the wider image */
+        top: -38%;        /* Pushes it up to align with the envelope top */
+    }
+
+    .butterfly-img {
+        width: 35px;
+    }
+
+    .leaves-container {
+        background-size: 150px;
+    }
+
+    body {
+        background-size: 150% auto;
+    }
             @keyframes flyAroundFlowersLeft {
                 0%   { transform: translate(-120px, -80px) rotate(0deg); }
                 100% { transform: translate(-120px, -80px) rotate(0deg); }
@@ -168,5 +183,6 @@
 </body>
 
 </html>
+
 
 
