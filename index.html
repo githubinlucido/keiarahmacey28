@@ -122,61 +122,24 @@
         @keyframes flyLeft { 0%, 100% { transform: translate(-270px, 220px); } 50% { transform: translate(-270px, 220px); } }
         @keyframes flyRight { 0%, 100% { transform: translate(370px, 200px); } 50% { transform: translate(370px, 220px); } }
 
-       @media (max-width: 600px) {
-    /* Adjust name size */
-    .header-logo { 
-        width: 75%; 
-    }
-
-    /* Shared mobile positioning for both layers */
-    .flower-layer { 
-        width: 140%;    /* Slightly larger to cover the edges */
-        left: -20%;     /* Centers the wider image */
-        top: -25%;      /* Adjust vertical position */
-    }
-
-    /* Fix the specific alignment for the front layer on mobile */
-    .front-layer {
-        margin-left: -15px; /* Reduced from desktop -35px */
-        margin-top: -30px;  /* Reduced from desktop -65px */
-        z-index: 20;        /* Ensure it's in front of envelope */
-    }
-
-    /* Fix the specific alignment for the back layer on mobile */
-    .back-layer {
-        margin-left: 5px;   /* Reduced from desktop 10px */
-        margin-top: -10px;  /* Reduced from desktop -20px */
-        z-index: 1;         /* Ensure it's behind envelope */
-    }
-
-    /* Fix Butterfly sizing for mobile */
-    .butterfly-img { 
-        width: 65px; 
-    }
-
-    /* Adjust butterfly flight paths so they don't fly off-screen */
-    @keyframes flyLeft { 
-        0%, 100% { transform: translate(-120px, 80px); } 
-        50% { transform: translate(-130px, 90px); } 
-    }
-    @keyframes flyRight { 
-        0%, 100% { transform: translate(120px, 70px); } 
-        50% { transform: translate(130px, 80px); } 
-    }
-}
+        @media (max-width: 600px) {
+            .header-logo { width: 70%; }
+            .flower-layer { width: 135%; left: -17.5%; top: -38%; }
+            .butterfly-img { width: 65px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
-        <img src="Keiarahmacey.svg" alt="Keiarah Macey" class="header-logo">
+        <img src="keiarahmacey.svg" alt="Keiarah Macey" class="header-logo">
 
         <div class="envelope-container">
-            <img src="Flower1.svg" class="flower-layer back-layer">
+            <img src="flower1.svg" class="flower-layer back-layer">
 
-            <img src="Envelope.svg" alt="Envelope" class="envelope-base">
+            <img src="envelope.svg" alt="Envelope" class="envelope-base">
 
-            <img src="Flower2.svg" class="flower-layer front-layer">
+            <img src="flower2.svg" class="flower-layer front-layer">
 
             <img src="butterfly-freedom.gif" class="butterfly-img b1">
             <img src="butterfly-freedom.gif" class="butterfly-img b2">
@@ -184,5 +147,4 @@
     </div>
 
 </body>
-
 </html>
