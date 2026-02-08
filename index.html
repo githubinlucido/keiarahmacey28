@@ -139,14 +139,14 @@
     .front-layer {
         margin-left: -15px; /* Reduced from desktop -35px */
         margin-top: -30px;  /* Reduced from desktop -65px */
-        z-index: 20;        /* Ensure it's in front of envelope */
+        z-index: 1;        /* Ensure it's in front of envelope */
     }
 
     /* Fix the specific alignment for the back layer on mobile */
     .back-layer {
         margin-left: 5px;   /* Reduced from desktop 10px */
         margin-top: -10px;  /* Reduced from desktop -20px */
-        z-index: 1;         /* Ensure it's behind envelope */
+        z-index: 20;         /* Ensure it's behind envelope */
     }
 
     /* Fix Butterfly sizing for mobile */
@@ -186,3 +186,4 @@
 </body>
 
 </html>
+
