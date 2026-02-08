@@ -17,6 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Your main wallpaper background */
             background: 
                 linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
                 url('Wallpaper.svg') no-repeat center center fixed;
@@ -33,12 +34,11 @@
             max-width: 800px;
         }
 
-        /* 1. LETTERING */
         .header-logo {
             width: 50%;
             max-width: 350px;
             margin-bottom: 20px;
-            z-index: 10;
+            z-index: 100; /* Stays on the very top */
             clip-path: inset(0 100% 0 0); 
             animation: typeLettering 2.5s ease-in-out forwards;
         }
@@ -47,7 +47,6 @@
             to { clip-path: inset(0 0 0 0); }
         }
 
-        /* 2. ENVELOPE */
         .envelope-container {
             position: relative;
             width: 100%;
@@ -57,124 +56,91 @@
             align-items: center;
             opacity: 0;
             animation: fadeInEnvelope 1s ease-out forwards;
-            animation-delay: 1.5s; 
+            animation-delay: 1.5s;
         }
 
         @keyframes fadeInEnvelope {
             to { opacity: 1; }
         }
 
+        /* MIDDLE LAYER: THE ENVELOPE */
         .envelope-base {
+            position: relative;
             width: 100%;
             height: auto;
-            display: block;
+            z-index: 10; /* The envelope sits in the middle */
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
         }
 
-        /* 3. FLOWERS */
-        .flowers-overlay {
+        /* THE FLOWERS */
+        .flower-layer {
             position: absolute;
-            top: -34%; 
-            left: -17%;
-            width: 125%; 
+            top: -20%; 
+            left: -22%;
+            width: 132%; 
             height: auto;
             pointer-events: none;
-            z-index: 5;
             opacity: 0;
+            background: transparent; /* Ensures the image tag itself isn't adding white */
             animation: zoomFadeIn 1s ease-out forwards;
             animation-delay: 2.2s; 
         }
+        .front-layer { 
+            z-index: 5; /* Directly in front of the envelope */
+            /* If flower2.svg has a white background, multiply will help, 
+               but it works best if the SVG itself is transparent. */
+           
+        }
+        .back-layer { 
+            z-index: 15; /* Directly behind the envelope */
+           
+        }
+
+       
 
         @keyframes zoomFadeIn {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* 4. UPDATED BUTTERFLY FLYPATHS (Outside the envelope) */
+        /* BUTTERFLIES */
         .butterfly-img {
             position: absolute;
-            width: 400px;
-            height: auto;
-            z-index: 20;
+            width: 300px;
+            z-index: 80; /* Above the flowers */
             opacity: 0;
-            pointer-events: none;
         }
 
-/* Butterfly 1: Pastel Pink/Lavender */
-.b1 {
-    animation: butterflyFade 1s forwards 3.2s, flyAroundFlowersLeft 10s infinite ease-in-out;
-    /* Low saturation makes it pastel, high brightness makes it soft */
-    filter: hue-rotate(-400deg) saturate(0.6) brightness(1.4);
-}
+        .b1 { animation: butterflyFade 1s forwards 3.2s, flyLeft 10s infinite ease-in-out; filter: hue-rotate(300deg) saturate(0.6) brightness(1.2); }
+        .b2 { width: 50px; animation: butterflyFade 1s forwards 3.8s, flyRight 12s infinite ease-in-out; filter: hue-rotate(40deg) saturate(0.5) brightness(1.3); }
 
-
-
-        @keyframes butterflyFade {
-            to { opacity: 1; }
-        }
-
-        /* Path for Top-Left corner */
-        @keyframes flyAroundFlowersLeft {
-            0%   { transform: translate(-320px, 220px) rotate(0deg); }
-            33%  { transform: translate(-280px, 280px) rotate(0deg); }
-            66%  { transform: translate(-350px, 180px) rotate(-10deg); }
-            100% { transform: translate(-320px, 220px) rotate(0deg); }
-        }
-
-   
+        @keyframes butterflyFade { to { opacity: 1; } }
+        @keyframes flyLeft { 0%, 100% { transform: translate(-270px, 220px); } 50% { transform: translate(-270px, 220px); } }
+        @keyframes flyRight { 0%, 100% { transform: translate(370px, 200px); } 50% { transform: translate(370px, 220px); } }
 
         @media (max-width: 600px) {
             .header-logo { width: 70%; }
-           /* ADJUSTED FOR MOBILE ALIGNMENT */
-    .flowers-overlay {
-        width: 130%;      /* Slightly wider to wrap the envelope */
-        left: -17.5%;     /* Centers the wider image */
-        top: -38%;        /* Pushes it up to align with the envelope top */
-    }
-
-/* 1. INCREASE BUTTERFLY SIZE FOR MOBILE */
-    .butterfly-img { 
-        width: 200px; /* Increased from 35px so they are visible */
-    }
-    
-    
-
-    /* 2. TIGHTEN FLIGHT PATHS SO THEY STAY NEAR THE FLOWERS */
-    @keyframes flyAroundFlowersLeft {
-        0%   { transform: translate(-130px, 200px) rotate(0deg); }
-        33%  { transform: translate(-100px, 240px) rotate(20deg); }
-        66%  { transform: translate(-150px, 160px) rotate(-10deg); }
-        100% { transform: translate(-130px, 200px) rotate(0deg); }
-    }
-
-
-        
+            .flower-layer { width: 135%; left: -17.5%; top: -38%; }
+            .butterfly-img { width: 65px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="main-wrapper">
-        <img src="Keiarahmacey.svg" alt="Keiarah Macey Name" class="header-logo">
+        <img src="keiarahmacey.svg" alt="Keiarah Macey" class="header-logo">
 
         <div class="envelope-container">
-            <img src="butterfly-freedom.gif" class="butterfly-img b1" alt="Butterfly">
-            <img src="butterfly-freedom.gif" class="butterfly-img b2" alt="Butterfly">
+            <img src="flower1.svg" class="flower-layer back-layer">
 
-            <img src="Envelope.svg" alt="Envelope" class="envelope-base">
-            <img src="Flowers.svg" alt="Floral Accents" class="flowers-overlay">
+            <img src="envelope.svg" alt="Envelope" class="envelope-base">
+
+            <img src="flower2.svg" class="flower-layer front-layer">
+
+            <img src="butterfly-freedom.gif" class="butterfly-img b1">
+            <img src="butterfly-freedom.gif" class="butterfly-img b2">
         </div>
     </div>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
