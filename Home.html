@@ -3,170 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keiarah Macey</title>
+    <title>Keiarah Macey - Home</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        /* ADDED: Night Mode Variables */
+        :root {
+            --night-bg: rgba(10, 12, 30, 0); /* Invisible by default */
+            --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%);
         }
 
+        /* When the 'night-mode' class is active on the body */
+        body.night-mode {
+            --night-bg: rgba(10, 12, 30, 0.85);
+            --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 12, 30, 0.9) 70%);
+        }
+
+        /* REQUESTED: Night Mode Adjustments for SVGs/Letters */
+        body.night-mode .inner-content img, 
+        body.night-mode .floating-card img:not(.location-frame-img) {
+            filter: brightness(1.1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+            transition: filter 0.5s ease;
+        }
+        
+        /* Make flowers slightly more vivid in dark mode */
+        body.night-mode .flower-layer {
+            filter: saturate(1.2) brightness(0.9);
+            mix-blend-mode: multiply; /* Keeps transparency fix from previous step */
+        }
+
+        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body, html {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: 
-                linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
-                url('Wallpaper.svg') no-repeat center center fixed;
-            background-size: cover; 
-            overflow: hidden;
+            min-height: 100vh; width: 100%; display: flex; justify-content: center; align-items: flex-start; 
+            background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') no-repeat center center fixed;
+            background-size: cover; overflow-x: hidden;
+            transition: background 0.5s ease; /* Smooth transition */
+        }
+
+        /* THE NIGHT OVERLAY LAYER */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--spotlight);
+            z-index: 50; /* Above wallpaper, below content */
+            pointer-events: none;
+            transition: background 0.5s ease;
+        }
+
+        /* ADDED: Night Mode Switch Button UI */
+        .mode-switch {
+            position: fixed; top: 20px; right: 20px; z-index: 10000;
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 12px; border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer; font-family: sans-serif; font-size: 12px; font-weight: bold;
         }
 
         .main-wrapper {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 90%;
-            max-width: 800px;
-            transition: opacity 0.5s ease; /* For smooth exit */
+            position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 900px;
+            padding: 40px 0; opacity: 0; animation: fadeInPage 1s ease-out forwards;
+            z-index: 100; /* Keeps content above the night haze */
         }
 
-        .header-logo {
-            width: 50%;
-            max-width: 350px;
-            margin-bottom: 20px;
-            z-index: 100;
-            clip-path: inset(0 100% 0 0); 
-            animation: typeLettering 2.5s ease-in-out forwards;
+        @keyframes fadeInPage { to { opacity: 1; } }
+
+        /* ENVELOPE SECTION */
+        .invitation-container {
+            position: relative; width: 60%; display: flex; justify-content: center; align-items: center;
+            margin-top: -20px; margin-bottom: 100px; 
         }
 
-        @keyframes typeLettering {
-            to { clip-path: inset(0 0 0 0); }
-        }
-
-        .envelope-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            animation: fadeInEnvelope 1s ease-out forwards;
-            animation-delay: 1.5s;
-            cursor: pointer; /* Makes it clear it's clickable */
-        }
-
-        @keyframes fadeInEnvelope {
-            to { opacity: 1; }
-        }
-
-        /* CLICK ANIMATION: Zoom into the envelope */
-        .envelope-open-anim {
-            animation: openZoom 1.2s ease-in-out forwards !important;
-        }
-
-        @keyframes openZoom {
-            0% { transform: scale(1); opacity: 1; }
-            30% { transform: scale(1.05); }
-            100% { transform: scale(4); opacity: 0; filter: blur(10px); }
-        }
-
-        .envelope-base {
-            position: relative;
-            width: 100%;
-            height: auto;
-            z-index: 10; 
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
-        }
-
-        .flower-layer {
-            position: absolute;
-            top: -20%; 
-            left: -22%;
-            width: 130%; 
-            height: auto;
-            pointer-events: none;
-            opacity: 0;
-            background: transparent;
-            animation: zoomFadeIn 1s ease-out forwards;
-            animation-delay: 2.2s; 
-        }
-
-        .front-layer { 
-            z-index: 5; 
-            margin-left: -35px; 
-            margin-top: -65px;
-        }
-
-        .back-layer { 
-            z-index: 15; 
-            margin-left: 10px; 
-            margin-top: -20px;
-        }
-
-        @keyframes zoomFadeIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .butterfly-img {
-            position: absolute;
-            width: 300px;
-            z-index: 80;
-            opacity: 0;
-        }
-
-        .b1 { animation: butterflyFade 1s forwards 3.2s, flyLeft 10s infinite ease-in-out; filter: hue-rotate(300deg) saturate(0.6) brightness(1.2); }
+        .envelope-open { width: 110%; max-width: 480px; z-index: 5; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15)); }
+        .inner-content { position: absolute; width: 60%; top: 0%; display: flex; flex-direction: column; align-items: center; z-index: 10; }
+        .youre-invited { width: 100%; margin-bottom: 100px; }
+        .km-birthday-logo { width: 150%; margin-top: 180px; }
         
+        /* DECORATIONS */
+        .flower-layer { position: absolute; pointer-events: none; width: 128%; mix-blend-mode: multiply; }
+        .back-layer { z-index: 20; top:25%; left: -16%; }
+        .front-layer { z-index: 2; top: 17%; left: -21%; }
+        .butterfly-img { position: absolute; width: 180px; z-index: 30; opacity: 0; animation: butterflyFade 1s forwards 1.5s, flyAround 12s infinite ease-in-out; }
+
         @keyframes butterflyFade { to { opacity: 1; } }
-        @keyframes flyLeft { 0%, 100% { transform: translate(-270px, 220px); } 50% { transform: translate(-270px, 220px); } }
+        @keyframes flyAround {
+            0%, 100% { transform: translate3d(250px, -50px, 0) rotate(10deg); }
+            50% { transform: translate3d(270px, -70px, 0) rotate(-10deg); }
+        }
+
+        /* FRAME CONTAINERS */
+        .event-details-frame, .location-details-frame {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+            max-width: 400px; margin-top: 110px; padding: 20px; 
+        }
+        
+        .event-details-frame { margin-top: 250px; margin-left: -20%; align-self: flex-start; }
+        .location-details-frame { margin-top: -670px; margin-left: 200px; align-self: flex-start; max-width: 470px;}
+
+        /* MODAL / ZOOM LOGIC */
+        .modal-overlay-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; justify-content: center; align-items: center;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .floating-card {
+            position: relative; background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); cursor: pointer;
+            animation: breathing 4s ease-in-out infinite;
+            display: flex; flex-direction: column; align-items: center; width: 100%; 
+            image-rendering: -webkit-optimize-contrast;
+            transform: translateZ(0); will-change: transform; backface-visibility: hidden;
+        }
+
+        .no-card {
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .modal-overlay-wrapper.active { display: flex; }
+        .modal-overlay-wrapper .floating-card {
+            width: 90%; max-width: 500px; background: #ffffff;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15); animation: none;
+            cursor: default; transform: scale(1.05);
+        }
+
+        .modal-overlay-wrapper .floating-card.no-card {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        /* CALENDAR OBJECTS */
+        .calendar-obj, .time-obj, .reminder-obj {
+            width: 85%; height: auto; display: block; margin: 0 auto;
+        }
+        .times-row { display: flex; gap: 10px; width: 100%; margin-bottom: 15px; justify-content: center; }
+        .time-obj { width: 40%; }
+        .calendar-obj { margin-bottom: 15px; }
+        .party-scale { width: 47%; transform: translateY(2%); }
+        .reminder-obj { width: 85%; }
+
+        /* LOCATION OVERLAY SYSTEM */
+        .location-container { position: relative; width: 100%; }
+        .location-frame-img { width: 100%; display: block; }
+        .frame-content-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        
+        .map-btn {
+            position: absolute; width: 15%; height: auto; cursor: pointer;
+            transition: transform 0.2s; z-index: 15; pointer-events: auto;
+        }
+        .map-btn:hover { transform: scale(1.1); }
+        .map-button-1 { top: 50%; left: 50%; } 
+        .map-button-2 { top: 72%; left: 50%; }
+
+        /* --- ADJUST SCALE HERE --- */
+        .location-content-img { 
+            width: 120%;             
+            transform: scale(0.87);  
+            margin-top: -60px; 
+            margin-left: -30px;
+            pointer-events: none; 
+        }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; background: #ff8fa3;
+            color: white; border-radius: 50%; display: none; justify-content: center; align-items: center;
+            font-family: Arial, sans-serif; font-weight: bold; cursor: pointer; border: none; z-index: 20;
+        }
+        .modal-overlay-wrapper.active .close-btn { display: flex; }
+
+        #ghost-placeholder, #ghost-placeholder-2 { display: none; width: 100%; pointer-events: none; }
 
         @media (max-width: 600px) {
-            .header-logo { width: 75%; }
-            .flower-layer { width: 130%; left: -20%; top: -15%; }
-            .front-layer { margin-left: -15px; margin-top: -30px; z-index: 1; }
-            .back-layer { margin-left: 5px; margin-top: -10px; z-index: 20; }
-            .butterfly-img { width: 65px; }
-            @keyframes flyLeft { 0%, 100% { transform: translate(-120px, 80px); } 50% { transform: translate(-130px, 90px); } }
+            .event-details-frame, .location-details-frame { 
+                align-items: center; align-self: center; margin-left: 0; margin-top: 50px; max-width: 90%; 
+            }
         }
     </style>
 </head>
-<body>
+<body id="pageBody">
 
-    <div class="main-wrapper" id="mainWrapper">
-        <img src="Keiarahmacey.svg" alt="Keiarah Macey" class="header-logo">
+    <div class="mode-switch" onclick="toggleNightMode()">
+        <span id="switchLabel">🌙 Night Mode</span>
+    </div>
 
-        <div class="envelope-container" id="envelope" onclick="goToHome()">
+    <div class="modal-overlay-wrapper" id="modalWrapper" onclick="toggleCard(null, false)"></div>
+
+    <div class="main-wrapper">
+        <div class="invitation-container">
             <img src="Flower1.svg" class="flower-layer back-layer">
-            <img src="Envelope.svg" alt="Envelope" class="envelope-base">
+            <img src="open_envelope.svg" class="envelope-open">
+            <div class="inner-content">
+                <img src="youre_invited.svg" class="youre-invited">
+                <img src="km_1stbirthday.svg" class="km-birthday-logo">
+            </div>
             <img src="Flower2.svg" class="flower-layer front-layer">
-            <img src="butterfly-freedom.gif" class="butterfly-img b1">
+            <img src="butterfly-freedom.gif" class="butterfly-img">
+        </div>
+
+        <div class="event-details-frame" id="details-section">
+            <div id="ghost-placeholder"></div>
+            <div class="floating-card" id="zoomCard1" onclick="toggleCard('zoomCard1', true, event)">
+                <button class="close-btn" onclick="toggleCard('zoomCard1', false, event)">×</button>
+                <img src="calendar.svg" class="calendar-obj">
+                <div class="times-row">
+                    <img src="baptism_time.svg" class="time-obj">
+                    <img src="party_time.svg" class="time-obj party-scale">
+                </div>
+                <img src="reminder_time.svg" class="reminder-obj">
+            </div>
+        </div>
+
+        <div class="location-details-frame" id="location-section">
+            <div id="ghost-placeholder-2"></div>
+            <div class="floating-card no-card" id="zoomCard2" onclick="toggleCard('zoomCard2', true, event)">
+                <button class="close-btn" onclick="toggleCard('zoomCard2', false, event)">×</button>
+                <div class="location-container">
+                    <img src="location_frame.svg" class="location-frame-img">
+                    <div class="frame-content-overlay">
+                        <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://maps.app.goo.gl/Q4tjRAj82zQGxB8A6')">
+                        <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://maps.app.goo.gl/FUYoZL51f5kodN4F7')">
+                        <img src="location_content.svg" class="location-content-img">
+                    </div>
+                </div>
+            </div>  
         </div>
     </div>
 
     <script>
-        function goToHome() {
-            const envelope = document.getElementById('envelope');
-            const wrapper = document.getElementById('mainWrapper');
+        // Night Mode Toggle Script
+        function toggleNightMode() {
+            const body = document.getElementById('pageBody');
+            const label = document.getElementById('switchLabel');
+            body.classList.toggle('night-mode');
             
-            // Trigger the zoom animation
-            envelope.classList.add('envelope-open-anim');
-            
-            // Fade out the entire wrapper slightly after the zoom starts
-            setTimeout(() => {
-                wrapper.style.opacity = "0";
-            }, 500);
+            if (body.classList.contains('night-mode')) {
+                label.innerHTML = "☀️ Day Mode";
+            } else {
+                label.innerHTML = "🌙 Night Mode";
+            }
+        }
 
-            // Redirect to Home.html after animation finishes (1.2 seconds)
-            setTimeout(() => {
-                window.location.href = 'Home.html';
-            }, 1200);
+        const modalWrapper = document.getElementById('modalWrapper');
+        let activeCardId = null;
+
+        function toggleCard(cardId, show, e) {
+            if (e) e.stopPropagation();
+            if (!cardId && activeCardId) cardId = activeCardId;
+            if (!cardId) return;
+
+            const card = document.getElementById(cardId);
+            const isFirstCard = (cardId === 'zoomCard1');
+            const parent = isFirstCard ? document.getElementById('details-section') : document.getElementById('location-section');
+            const ghost = isFirstCard ? document.getElementById('ghost-placeholder') : document.getElementById('ghost-placeholder-2');
+
+            if(show) {
+                activeCardId = cardId;
+                ghost.style.height = card.offsetHeight + "px";
+                ghost.style.display = "block";
+                modalWrapper.appendChild(card);
+                modalWrapper.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                activeCardId = null;
+                parent.appendChild(card);
+                ghost.style.display = "none";
+                modalWrapper.classList.remove('active');
+                document.body.style.overflow = ''; 
+            }
         }
     </script>
-
 </body>
 </html>
