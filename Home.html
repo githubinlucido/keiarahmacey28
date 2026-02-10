@@ -5,196 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keiarah Macey - Home</title>
     <style>
-        /* ADDED: Night Mode Variables */
-        :root {
-            --night-bg: rgba(10, 12, 30, 0); /* Invisible by default */
-            --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%);
-        }
+        :root { --night-bg: transparent; --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%); }
+        body.night-mode { --night-bg: rgba(10, 12, 30, 0.85); --spotlight: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 12, 30, 0.9) 80%); }
+        body.night-mode .inner-content img, body.night-mode .floating-card img:not(.location-frame-img), body.night-mode .km-birthday-logo-static { filter: brightness(0.8) drop-shadow(0 0 8px rgba(255, 192, 203, 0.5)); }
 
-        /* When the 'night-mode' class is active on the body */
-        body.night-mode {
-            --night-bg: rgba(10, 12, 30, 0.85);
-            --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 12, 30, 0.9) 70%);
-        }
-
-        /* REQUESTED: Night Mode Adjustments for SVGs/Letters */
-        body.night-mode .inner-content img, 
-        body.night-mode .floating-card img:not(.location-frame-img) {
-            filter: brightness(1.1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
-            transition: filter 0.5s ease;
-        }
-        
-        /* Make flowers slightly more vivid in dark mode */
-        body.night-mode .flower-layer {
-            filter: saturate(1.2) brightness(0.9);
-            mix-blend-mode: multiply; /* Keeps transparency fix from previous step */
-        }
-
-        html { scroll-behavior: smooth; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { min-height: 100vh; width: 100%; display: flex; justify-content: center; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: sans-serif; }
+        body::before { content: ""; position: fixed; inset: 0; background: var(--spotlight); z-index: 50; pointer-events: none; transition: 0.5s; }
+
+        /* FALLING LEAVES CANVAS */
+        #leafCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 55; }
+
+        .mode-switch { position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(255, 255, 255, 0.8); padding: 8px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; font-size: 12px; font-weight: bold; }
+        .main-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; padding: 20px; z-index: 100; }
         
-        body, html {
-            min-height: 100vh; width: 100%; display: flex; justify-content: center; align-items: flex-start; 
-            background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') no-repeat center center fixed;
-            background-size: cover; overflow-x: hidden;
-            transition: background 0.5s ease; /* Smooth transition */
-        }
-
-        /* THE NIGHT OVERLAY LAYER */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--spotlight);
-            z-index: 50; /* Above wallpaper, below content */
-            pointer-events: none;
-            transition: background 0.5s ease;
-        }
-
-        /* ADDED: Night Mode Switch Button UI */
-        .mode-switch {
-            position: fixed; top: 20px; right: 20px; z-index: 10000;
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 8px 12px; border-radius: 50px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            cursor: pointer; font-family: sans-serif; font-size: 12px; font-weight: bold;
-        }
-
-        .main-wrapper {
-            position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 900px;
-            padding: 40px 0; opacity: 0; animation: fadeInPage 1s ease-out forwards;
-            z-index: 100; /* Keeps content above the night haze */
-        }
-
-        @keyframes fadeInPage { to { opacity: 1; } }
-
-        /* ENVELOPE SECTION */
-        .invitation-container {
-            position: relative; width: 60%; display: flex; justify-content: center; align-items: center;
-            margin-top: -20px; margin-bottom: 100px; 
-        }
-
-        .envelope-open { width: 110%; max-width: 480px; z-index: 5; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15)); }
-        .inner-content { position: absolute; width: 60%; top: 0%; display: flex; flex-direction: column; align-items: center; z-index: 10; }
-        .youre-invited { width: 100%; margin-bottom: 100px; }
-        .km-birthday-logo { width: 150%; margin-top: 180px; }
+        .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; width: 100%; }
+        .invitation-container { position: relative; width: 100%; max-width: 500px; display: flex; justify-content: center; align-items: center; }
+        .envelope-open { width: 100%; z-index: 5; position: relative; }
+        .inner-content { position: absolute; width: 50%; top: 12%; z-index: 10; left: 50%; transform: translateX(-50%); }
         
-        /* DECORATIONS */
-        .flower-layer { position: absolute; pointer-events: none; width: 128%; mix-blend-mode: multiply; }
-        .back-layer { z-index: 20; top:25%; left: -16%; }
-        .front-layer { z-index: 2; top: 17%; left: -21%; }
-        .butterfly-img { position: absolute; width: 180px; z-index: 30; opacity: 0; animation: butterflyFade 1s forwards 1.5s, flyAround 12s infinite ease-in-out; }
+        .flower-layer { position: absolute; pointer-events: none; width: 140%; mix-blend-mode:normal; left: 50%; transform: translateX(-50%); }
+        .back-layer { z-index: 4; top: 20%; left:45%; }
+        .front-layer { z-index: 15; bottom: -10%; }
 
-        @keyframes butterflyFade { to { opacity: 1; } }
-        @keyframes flyAround {
-            0%, 100% { transform: translate3d(250px, -50px, 0) rotate(10deg); }
-            50% { transform: translate3d(270px, -70px, 0) rotate(-10deg); }
-        }
+        .km-birthday-logo-static { width: 90%; max-width: 600px; margin-top: 50px; z-index: 60; position: relative; }
 
-        /* FRAME CONTAINERS */
-        .event-details-frame, .location-details-frame {
-            display: flex; flex-direction: column; align-items: center; width: 100%;
-            max-width: 400px; margin-top: 110px; padding: 20px; 
-        }
-        
-        .event-details-frame { margin-top: 250px; margin-left: -20%; align-self: flex-start; }
-        .location-details-frame { margin-top: -670px; margin-left: 200px; align-self: flex-start; max-width: 470px;}
+        /* GRID & CARDS */
+        .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; margin-top: 10px; align-items: stretch; }
+        .frame-container { width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
 
-        /* MODAL / ZOOM LOGIC */
-        .modal-overlay-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; justify-content: center; align-items: center;
-            z-index: 9999;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-        }
+        @keyframes breathing { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .floating-card { background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 480px; animation: breathing 4s infinite; transition: 0.3s; }
+        .no-card { background: transparent !important; box-shadow: none !important; border: none !important; }
 
-        .floating-card {
-            position: relative; background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); cursor: pointer;
-            animation: breathing 4s ease-in-out infinite;
-            display: flex; flex-direction: column; align-items: center; width: 100%; 
-            image-rendering: -webkit-optimize-contrast;
-            transform: translateZ(0); will-change: transform; backface-visibility: hidden;
-        }
+        /* RSVP SPECIFIC SCALING & CLICKABLE LOGO */
+        #zoomCard3 { transform: scale(1.05); } 
+        .rsvp-link-wrapper { width: 85%; margin-bottom: 20px; transition: transform 0.2s ease; display: block; text-align: center; }
+        .rsvp-link-wrapper:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .rsvp-header-img { width: 100%; cursor: pointer; }
 
-        .no-card {
-            background: transparent !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-        }
+        .rsvp-text { font-family: 'Times New Roman', serif; color: #d67b8c; text-align: center; line-height: 1.6; font-size: 16px; margin-top: 10px; padding: 0 15px; }
+        .rsvp-text a { color: #b35d6d; text-decoration: none; font-weight: bold; }
 
-        @keyframes breathing {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
+        .location-container { position: relative; width: 430px; display: flex; justify-content: center; }
+        .location-frame-img { width: 410px; height: auto; display: block; }
+        .frame-content-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+        .map-btn { position: absolute; width: 10%; cursor: pointer; pointer-events: auto; z-index: 20; }
+        .map-button-1 { top: 55%; left: 50%; } 
+        .map-button-2 { top: 76%; left: 50%; }
+        .location-content-img { width: 110%; transform: scale(0.92); pointer-events: none; }
 
+        /* MODALS */
+        .modal-overlay-wrapper { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; z-index: 9999; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
         .modal-overlay-wrapper.active { display: flex; }
-        .modal-overlay-wrapper .floating-card {
-            width: 90%; max-width: 500px; background: #ffffff;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15); animation: none;
-            cursor: default; transform: scale(1.05);
-        }
-
-        .modal-overlay-wrapper .floating-card.no-card {
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-
-        /* CALENDAR OBJECTS */
-        .calendar-obj, .time-obj, .reminder-obj {
-            width: 85%; height: auto; display: block; margin: 0 auto;
-        }
-        .times-row { display: flex; gap: 10px; width: 100%; margin-bottom: 15px; justify-content: center; }
-        .time-obj { width: 40%; }
-        .calendar-obj { margin-bottom: 15px; }
-        .party-scale { width: 47%; transform: translateY(2%); }
-        .reminder-obj { width: 85%; }
-
-        /* LOCATION OVERLAY SYSTEM */
-        .location-container { position: relative; width: 100%; }
-        .location-frame-img { width: 100%; display: block; }
-        .frame-content-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            pointer-events: none;
-        }
-        
-        .map-btn {
-            position: absolute; width: 15%; height: auto; cursor: pointer;
-            transition: transform 0.2s; z-index: 15; pointer-events: auto;
-        }
-        .map-btn:hover { transform: scale(1.1); }
-        .map-button-1 { top: 50%; left: 50%; } 
-        .map-button-2 { top: 72%; left: 50%; }
-
-        /* --- ADJUST SCALE HERE --- */
-        .location-content-img { 
-            width: 120%;             
-            transform: scale(0.87);  
-            margin-top: -60px; 
-            margin-left: -30px;
-            pointer-events: none; 
-        }
-
-        .close-btn {
-            position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; background: #ff8fa3;
-            color: white; border-radius: 50%; display: none; justify-content: center; align-items: center;
-            font-family: Arial, sans-serif; font-weight: bold; cursor: pointer; border: none; z-index: 20;
-        }
+        .modal-overlay-wrapper .floating-card { width: 90%; max-width: 500px; min-height: auto; background: white; cursor: default; animation: none; transform: scale(1) !important; }
+        .close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #ff8fa3; color: white; border-radius: 50%; display: none; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; border: none; z-index: 20; }
         .modal-overlay-wrapper.active .close-btn { display: flex; }
+        .ghost { display: none; width: 100%; }
 
-        #ghost-placeholder, #ghost-placeholder-2 { display: none; width: 100%; pointer-events: none; }
-
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 900px) { 
+            .content-grid { grid-template-columns: 1fr; max-width: 500px; } 
+            .floating-card { min-height: auto; padding: 40px 25px; } 
+            #zoomCard3 { transform: scale(1); }
+        }
         @media (max-width: 600px) {
-            .event-details-frame, .location-details-frame { 
-                align-items: center; align-self: center; margin-left: 0; margin-top: 50px; max-width: 90%; 
-            }
+            .invitation-container { max-width: 85%; }
+            .flower-layer { width: 180%; }
+            .km-birthday-logo-static { width: 100%; margin-top: 20px; }
+            .location-container { width: 100%; }
+            .location-frame-img { width: 100%; }
+            .location-content-img { width: 100%; transform: scale(0.9); }
+            .rsvp-text { font-size: 14px; }
         }
     </style>
 </head>
 <body id="pageBody">
+
+    <canvas id="leafCanvas"></canvas>
 
     <div class="mode-switch" onclick="toggleNightMode()">
         <span id="switchLabel">🌙 Night Mode</span>
@@ -203,72 +91,150 @@
     <div class="modal-overlay-wrapper" id="modalWrapper" onclick="toggleCard(null, false)"></div>
 
     <div class="main-wrapper">
-        <div class="invitation-container">
-            <img src="Flower1.svg" class="flower-layer back-layer">
-            <img src="open_envelope.svg" class="envelope-open">
-            <div class="inner-content">
-                <img src="youre_invited.svg" class="youre-invited">
-                <img src="km_1stbirthday.svg" class="km-birthday-logo">
-            </div>
-            <img src="Flower2.svg" class="flower-layer front-layer">
-            <img src="butterfly-freedom.gif" class="butterfly-img">
-        </div>
-
-        <div class="event-details-frame" id="details-section">
-            <div id="ghost-placeholder"></div>
-            <div class="floating-card" id="zoomCard1" onclick="toggleCard('zoomCard1', true, event)">
-                <button class="close-btn" onclick="toggleCard('zoomCard1', false, event)">×</button>
-                <img src="calendar.svg" class="calendar-obj">
-                <div class="times-row">
-                    <img src="baptism_time.svg" class="time-obj">
-                    <img src="party_time.svg" class="time-obj party-scale">
+        <div class="header-section">
+            <div class="invitation-container">
+                <img src="Flower2.svg" class="flower-layer back-layer">
+                <img src="open_envelope.svg" class="envelope-open">
+                <div class="inner-content">
+                    <img src="youre_invited.svg" style="width:100%">
                 </div>
-                <img src="reminder_time.svg" class="reminder-obj">
+                <img src="Flower1.svg" class="flower-layer front-layer">
             </div>
+            <img src="km_1stbirthday.svg" class="km-birthday-logo-static">
         </div>
 
-        <div class="location-details-frame" id="location-section">
-            <div id="ghost-placeholder-2"></div>
-            <div class="floating-card no-card" id="zoomCard2" onclick="toggleCard('zoomCard2', true, event)">
-                <button class="close-btn" onclick="toggleCard('zoomCard2', false, event)">×</button>
-                <div class="location-container">
-                    <img src="location_frame.svg" class="location-frame-img">
-                    <div class="frame-content-overlay">
-                        <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://maps.app.goo.gl/Q4tjRAj82zQGxB8A6')">
-                        <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://maps.app.goo.gl/FUYoZL51f5kodN4F7')">
-                        <img src="location_content.svg" class="location-content-img">
+        <div class="content-grid">
+            <div class="frame-container" id="parent-1">
+                <div class="ghost" id="ghost-1"></div>
+                <div class="floating-card" id="zoomCard1" onclick="toggleCard('zoomCard1', true, event)">
+                    <button class="close-btn" onclick="toggleCard('zoomCard1', false, event)">×</button>
+                    <img src="calendar.svg" style="width:85%; margin-bottom:10px;">
+                    <div style="display:flex; gap:10px; width: 90%; justify-content: center;">
+                        <img src="baptism_time.svg" style="width:45%;">
+                        <img src="party_time.svg" style="width:45%;">
+                    </div>
+                    <img src="reminder_time.svg" style="width:85%; margin-top:10px;">
+                </div>
+            </div>
+
+            <div class="frame-container" id="parent-2">
+                <div class="ghost" id="ghost-2"></div>
+                <div class="floating-card no-card" id="zoomCard2" onclick="toggleCard('zoomCard2', true, event)">
+                    <button class="close-btn" onclick="toggleCard('zoomCard2', false, event)">×</button>
+                    <div class="location-container">
+                        <img src="location_frame.svg" class="location-frame-img">
+                        <div class="frame-content-overlay">
+                            <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://facebook.com/your-profile-link')">
+                            <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://facebook.com/your-profile-link')">
+                            <img src="location_content.svg" class="location-content-img">
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="frame-container" id="parent-3">
+                <div class="ghost" id="ghost-3"></div>
+                <div class="floating-card" id="zoomCard3" onclick="toggleCard('zoomCard3', true, event)">
+                    <button class="close-btn" onclick="toggleCard('zoomCard3', false, event)">×</button>
+                    
+                    <a href="RSVP.html" class="rsvp-link-wrapper" onclick="event.stopPropagation()">
+                        <img src="rsvp_header.svg" class="rsvp-header-img" alt="RSVP Now">
+                    </a>
+
+                    <div class="rsvp-text">
+                        <p>We would love to celebrate with you.</p>
+                        <p>To ensure we have everything prepared for your arrival, we kindly request a response by <strong>May 20</strong>.</p><br>
+                        <p style="font-size: 13px; font-style: italic; opacity: 0.9;">Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p><br>
+                        <p>If you have questions or concerns, don’t hesitate to contact 
+                            <a href="https://facebook.com/kim_profile" target="_blank" onclick="event.stopPropagation()">KIM</a> & 
+                            <a href="https://facebook.com/jm_profile" target="_blank" onclick="event.stopPropagation()">JM</a> on their social media.
+                        </p>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
 
     <script>
-        // Night Mode Toggle Script
-        function toggleNightMode() {
-            const body = document.getElementById('pageBody');
-            const label = document.getElementById('switchLabel');
-            body.classList.toggle('night-mode');
-            
-            if (body.classList.contains('night-mode')) {
-                label.innerHTML = "☀️ Day Mode";
-            } else {
-                label.innerHTML = "🌙 Night Mode";
+        const canvas = document.getElementById('leafCanvas');
+        const ctx = canvas.getContext('2d');
+        let leaves = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Leaf {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 8 + 4;
+                this.speed = Math.random() * 2 + 2; 
+                this.wind = Math.random() * 1.5 - 0.75;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 4 - 2; 
+                this.opacity = Math.random() * 0.4 + 0.6; 
+                
+                const colors = ['#ffd1dc', '#ffb7c5', '#f8c8dc', '#fff5ba'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.y += this.speed;
+                this.x += this.wind;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
             }
         }
+
+        for (let i = 0; i < 40; i++) {
+            leaves.push(new Leaf());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(leaf => {
+                leaf.update();
+                leaf.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
 
         const modalWrapper = document.getElementById('modalWrapper');
         let activeCardId = null;
 
+        function toggleNightMode() {
+            const body = document.getElementById('pageBody');
+            body.classList.toggle('night-mode');
+            document.getElementById('switchLabel').innerText = body.classList.contains('night-mode') ? "☀️ Day Mode" : "🌙 Night Mode";
+        }
+
         function toggleCard(cardId, show, e) {
             if (e) e.stopPropagation();
-            if (!cardId && activeCardId) cardId = activeCardId;
+            cardId = cardId || activeCardId;
             if (!cardId) return;
 
-            const card = document.getElementById(cardId);
-            const isFirstCard = (cardId === 'zoomCard1');
-            const parent = isFirstCard ? document.getElementById('details-section') : document.getElementById('location-section');
-            const ghost = isFirstCard ? document.getElementById('ghost-placeholder') : document.getElementById('ghost-placeholder-2');
+            const card = document.getElementById(cardId), 
+                  num = cardId.replace('zoomCard', ''),
+                  ghost = document.getElementById('ghost-' + num),
+                  parent = document.getElementById('parent-' + num);
 
             if(show) {
                 activeCardId = cardId;
