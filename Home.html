@@ -10,247 +10,238 @@
         body.night-mode .inner-content img, body.night-mode .floating-card img:not(.location-frame-img), body.night-mode .km-birthday-logo-static { filter: brightness(0.8) drop-shadow(0 0 8px rgba(255, 192, 203, 0.5)); }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { min-height: 100vh; width: 100%; display: flex; justify-content: center; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: sans-serif; }
+        
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+        body, html { min-height: 100vh; width: 100%; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: sans-serif; }
         body::before { content: ""; position: fixed; inset: 0; background: var(--spotlight); z-index: 50; pointer-events: none; transition: 0.5s; }
 
-        /* FALLING LEAVES CANVAS */
         #leafCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 55; }
 
-        .mode-switch { position: fixed; top: 20px; right: 20px; z-index: 10000; background: rgba(255, 255, 255, 0.8); padding: 8px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; font-size: 12px; font-weight: bold; }
-        .main-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; padding: 20px; z-index: 100; }
+        .snap-layer { scroll-snap-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; width: 100%; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(80px) scale(0.9);
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
         
-        .header-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; width: 100%; }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        .mode-switch-container { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.85); padding: 6px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #ff8fa3; }
+        input:checked + .slider:before { transform: translateX(14px); }
+        .mode-icon { font-size: 14px; }
+
+        .main-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; padding: 20px; z-index: 100; }
+        .header-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .invitation-container { position: relative; width: 100%; max-width: 500px; display: flex; justify-content: center; align-items: center; }
         .envelope-open { width: 100%; z-index: 5; position: relative; }
         .inner-content { position: absolute; width: 50%; top: 12%; z-index: 10; left: 50%; transform: translateX(-50%); }
-        
-        .flower-layer { position: absolute; pointer-events: none; width: 140%; mix-blend-mode:normal; left: 50%; transform: translateX(-50%); }
+        .flower-layer { position: absolute; pointer-events: none; width: 140%; left: 50%; transform: translateX(-50%); }
         .back-layer { z-index: 4; top: 20%; left:45%; }
         .front-layer { z-index: 15; bottom: -10%; }
-
         .km-birthday-logo-static { width: 90%; max-width: 600px; margin-top: 50px; z-index: 60; position: relative; }
 
-        /* GRID & CARDS */
-        .content-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; margin-top: 10px; align-items: stretch; }
+        .content-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; align-items: stretch; }
         .frame-container { width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
-
+        
         @keyframes breathing { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        .floating-card { background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 480px; animation: breathing 4s infinite; transition: 0.3s; }
+        
+        .floating-card { background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: default; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 480px; animation: breathing 4s infinite; transition: 0.3s; }
         .no-card { background: transparent !important; box-shadow: none !important; border: none !important; }
 
-        /* RSVP SPECIFIC SCALING & CLICKABLE LOGO */
-        #zoomCard3 { transform: scale(1.05); } 
-        .rsvp-link-wrapper { width: 85%; margin-bottom: 20px; transition: transform 0.2s ease; display: block; text-align: center; }
-        .rsvp-link-wrapper:hover { transform: scale(1.05); filter: brightness(1.1); }
-        .rsvp-header-img { width: 100%; cursor: pointer; }
-
-        .rsvp-text { font-family: 'Times New Roman', serif; color: #d67b8c; text-align: center; line-height: 1.6; font-size: 16px; margin-top: 10px; padding: 0 15px; }
-        .rsvp-text a { color: #b35d6d; text-decoration: none; font-weight: bold; }
-
-        .location-container { position: relative; width: 430px; display: flex; justify-content: center; }
-        .location-frame-img { width: 410px; height: auto; display: block; }
+        .calendar-main { width: 55%; margin-bottom: 10px; }
+        .time-row { display: flex; gap: 10px; width: 90%; justify-content: center; }
+        .time-row img { width: 45%; }
+        .time-row img:nth-child(2) { width: 45%; transform: scale(1.2); margin-left: -5%; }
+        .reminder-img { width: 85%; margin-top: 10px; }
+        
+        .dresscode-img { width: 150%; max-width: 2000px; height: auto; margin-left: 10%; }
+        
+        .location-container { position: relative; width: 550px; display: flex; justify-content: center; }
+        .location-frame-img { width: 532px; height: auto; display: block; }
         .frame-content-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
         .map-btn { position: absolute; width: 10%; cursor: pointer; pointer-events: auto; z-index: 20; }
         .map-button-1 { top: 55%; left: 50%; } 
         .map-button-2 { top: 76%; left: 50%; }
-        .location-content-img { width: 110%; transform: scale(0.92); pointer-events: none; }
+        .location-content-img { width: 120%; transform: scale(0.88); pointer-events: none; margin-left: -30px; margin-bottom: 20px; }
 
-        /* MODALS */
-        .modal-overlay-wrapper { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; z-index: 9999; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
-        .modal-overlay-wrapper.active { display: flex; }
-        .modal-overlay-wrapper .floating-card { width: 90%; max-width: 500px; min-height: auto; background: white; cursor: default; animation: none; transform: scale(1) !important; }
-        .close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: #ff8fa3; color: white; border-radius: 50%; display: none; justify-content: center; align-items: center; font-weight: bold; cursor: pointer; border: none; z-index: 20; }
-        .modal-overlay-wrapper.active .close-btn { display: flex; }
-        .ghost { display: none; width: 100%; }
+        .rsvp-image-format { text-align: center; color: #ff8fa3; font-family: 'Baskerville', 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 1px; line-height: 1.3; font-size: 15px; transform: scaleY(1.1); }
+        .rsvp-image-format p { margin-bottom: 35px; }
+        .rsvp-cloud-header { width: 80%; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s; }
+        .rsvp-cloud-header:hover { transform: scale(1.05); }
 
-        /* RESPONSIVE DESIGN */
+        .name-link { text-decoration: none; font-weight: bold; transition: opacity 0.3s; }
+        .name-link:hover { opacity: 0.7; }
+        .name-kim { color: #d6a4cc; }
+        .name-jm { color: #8eb9e5; }
+
+        .godparents-wrapper { width: 60%; max-width: 550px; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .godparent-bg-frame { width: 100%; height: auto; z-index: 1; position: relative; }
+        .godparents-content-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 2; pointer-events: none; }
+        .godparents-main-frame { width: 100%; height: auto; transform: scale(1.1); }
+        .clickable-object { position: absolute; cursor: pointer; transition: transform 0.2s; z-index: 70; pointer-events: auto; }
+        .clickable-object:hover { transform: scale(1.1); }
+        .ninang-link { width: 25%; top: 18%; left: 24%; }
+        .ninong-link { width: 25%; top: 18%; left: 51%; }
+
         @media (max-width: 900px) { 
-            .content-grid { grid-template-columns: 1fr; max-width: 500px; } 
+            .content-grid { grid-template-columns: 1fr; } 
+            .frame-container { scroll-snap-align: center; min-height: 100vh; }
             .floating-card { min-height: auto; padding: 40px 25px; } 
-            #zoomCard3 { transform: scale(1); }
+            .godparents-wrapper { width: 100%; } 
         }
-        @media (max-width: 600px) {
-            .invitation-container { max-width: 85%; }
-            .flower-layer { width: 180%; }
-            .km-birthday-logo-static { width: 100%; margin-top: 20px; }
-            .location-container { width: 100%; }
-            .location-frame-img { width: 100%; }
-            .location-content-img { width: 100%; transform: scale(0.9); }
-            .rsvp-text { font-size: 14px; }
-        }
+        @media (max-width: 600px) { .invitation-container { max-width: 85%; } .km-birthday-logo-static { width: 100%; } .location-container { width: 100%; } .location-frame-img { width: 100%; } .rsvp-image-format { font-size: 16px; } }
     </style>
 </head>
 <body id="pageBody">
 
     <canvas id="leafCanvas"></canvas>
 
-    <div class="mode-switch" onclick="toggleNightMode()">
-        <span id="switchLabel">🌙 Night Mode</span>
+    <div class="mode-switch-container">
+        <span class="mode-icon">☀️</span>
+        <label class="switch">
+            <input type="checkbox" id="nightModeToggle" onclick="toggleNightMode()">
+            <span class="slider"></span>
+        </label>
+        <span class="mode-icon">🌙</span>
     </div>
 
-    <div class="modal-overlay-wrapper" id="modalWrapper" onclick="toggleCard(null, false)"></div>
-
-    <div class="main-wrapper">
-        <div class="header-section">
-            <div class="invitation-container">
-                <img src="Flower2.svg" class="flower-layer back-layer">
-                <img src="open_envelope.svg" class="envelope-open">
-                <div class="inner-content">
-                    <img src="youre_invited.svg" style="width:100%">
-                </div>
-                <img src="Flower1.svg" class="flower-layer front-layer">
-            </div>
-            <img src="km_1stbirthday.svg" class="km-birthday-logo-static">
-        </div>
-
-        <div class="content-grid">
-            <div class="frame-container" id="parent-1">
-                <div class="ghost" id="ghost-1"></div>
-                <div class="floating-card" id="zoomCard1" onclick="toggleCard('zoomCard1', true, event)">
-                    <button class="close-btn" onclick="toggleCard('zoomCard1', false, event)">×</button>
-                    <img src="calendar.svg" style="width:85%; margin-bottom:10px;">
-                    <div style="display:flex; gap:10px; width: 90%; justify-content: center;">
-                        <img src="baptism_time.svg" style="width:45%;">
-                        <img src="party_time.svg" style="width:45%;">
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="header-section reveal">
+                <div class="invitation-container">
+                    <img src="Flower2.svg" class="flower-layer back-layer">
+                    <img src="open_envelope.svg" class="envelope-open">
+                    <div class="inner-content">
+                        <img src="youre_invited.svg" style="width:100%">
                     </div>
-                    <img src="reminder_time.svg" style="width:85%; margin-top:10px;">
+                    <img src="Flower1.svg" class="flower-layer front-layer">
+                </div>
+                <img src="km_1stbirthday.svg" class="km-birthday-logo-static">
+            </div>
+        </div>
+    </section>
+
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="content-grid">
+                <div class="frame-container reveal">
+                    <div class="floating-card">
+                        <img src="calendar.svg" class="calendar-main">
+                        <div class="time-row">
+                            <img src="baptism_time.svg">
+                            <img src="party_time.svg">
+                        </div>
+                        <img src="reminder_time.svg" class="reminder-img">
+                    </div>
+                </div>
+                <div class="frame-container reveal">
+                    <div class="floating-card no-card">
+                        <div class="location-container">
+                            <img src="location_frame.svg" class="location-frame-img">
+                            <div class="frame-content-overlay">
+                                <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://maps.app.goo.gl/GhvxAHVuiD7mh2MY8')">
+                                <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://maps.app.goo.gl/3p3zChQtqfnoujvR7')">
+                                <img src="location_content.svg" class="location-content-img">
+                            </div>
+                        </div>
+                    </div>  
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="frame-container" id="parent-2">
-                <div class="ghost" id="ghost-2"></div>
-                <div class="floating-card no-card" id="zoomCard2" onclick="toggleCard('zoomCard2', true, event)">
-                    <button class="close-btn" onclick="toggleCard('zoomCard2', false, event)">×</button>
-                    <div class="location-container">
-                        <img src="location_frame.svg" class="location-frame-img">
-                        <div class="frame-content-overlay">
-                            <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://facebook.com/your-profile-link')">
-                            <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://facebook.com/your-profile-link')">
-                            <img src="location_content.svg" class="location-content-img">
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="content-grid">
+                <div class="frame-container reveal">
+                    <div class="floating-card">
+                        <img src="rsvp_header.svg" class="rsvp-cloud-header" alt="RSVP Header" onclick="location.href='RSVP.html'">
+                        
+                        <div class="rsvp-image-format">
+                            <p>We would love to celebrate with you.</p>
+                            <p>To ensure we have everything prepared for your arrival, we kindly request a response by May 20.</p>
+                            <p>Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p>
+                            <br>
+                            <p>If you have questions, contact 
+                                <a href="https://www.facebook.com/kimtwishaaa?__tn__=-R" class="name-link name-kim">KIM</a> & 
+                                <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a>
+                            </p>
+                            <p>on their social media.</p>
                         </div>
                     </div>
-                </div>  
-            </div>
-
-            <div class="frame-container" id="parent-3">
-                <div class="ghost" id="ghost-3"></div>
-                <div class="floating-card" id="zoomCard3" onclick="toggleCard('zoomCard3', true, event)">
-                    <button class="close-btn" onclick="toggleCard('zoomCard3', false, event)">×</button>
-                    
-                    <a href="RSVP.html" class="rsvp-link-wrapper" onclick="event.stopPropagation()">
-                        <img src="rsvp_header.svg" class="rsvp-header-img" alt="RSVP Now">
-                    </a>
-
-                    <div class="rsvp-text">
-                        <p>We would love to celebrate with you.</p>
-                        <p>To ensure we have everything prepared for your arrival, we kindly request a response by <strong>May 20</strong>.</p><br>
-                        <p style="font-size: 13px; font-style: italic; opacity: 0.9;">Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p><br>
-                        <p>If you have questions or concerns, don’t hesitate to contact 
-                            <a href="https://facebook.com/kim_profile" target="_blank" onclick="event.stopPropagation()">KIM</a> & 
-                            <a href="https://facebook.com/jm_profile" target="_blank" onclick="event.stopPropagation()">JM</a> on their social media.
-                        </p>
+                </div>
+                <div class="frame-container reveal">
+                    <div class="floating-card no-card">
+                        <img src="dresscode.svg" class="dresscode-img" alt="Dress Code">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="godparents-wrapper reveal">
+                <img src="godparent_frame.svg" class="godparent-bg-frame" alt="Background Frame">
+                <div class="godparents-content-overlay">
+                    <img src="godparents.svg" class="godparents-main-frame" alt="Godparents Content">
+                    <a href="ninang.html"><img src="ninang.svg" class="clickable-object ninang-link" alt="Ninangs"></a>
+                    <a href="ninong.html"><img src="ninong.svg" class="clickable-object ninong-link" alt="Ninongs"></a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script>
         const canvas = document.getElementById('leafCanvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize);
         resize();
-
         class Leaf {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = -20;
-                this.size = Math.random() * 8 + 4;
-                this.speed = Math.random() * 2 + 2; 
-                this.wind = Math.random() * 1.5 - 0.75;
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 4 - 2; 
-                this.opacity = Math.random() * 0.4 + 0.6; 
-                
+                this.x = Math.random() * canvas.width; this.y = -20;
+                this.size = Math.random() * 8 + 4; this.speed = Math.random() * 2 + 2; 
+                this.wind = Math.random() * 1.5 - 0.75; this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 4 - 2; this.opacity = Math.random() * 0.4 + 0.6; 
                 const colors = ['#ffd1dc', '#ffb7c5', '#f8c8dc', '#fff5ba'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
-            update() {
-                this.y += this.speed;
-                this.x += this.wind;
-                this.rotation += this.rotationSpeed;
-                if (this.y > canvas.height) this.reset();
-            }
+            update() { this.y += this.speed; this.x += this.wind; this.rotation += this.rotationSpeed; if (this.y > canvas.height) this.reset(); }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation * Math.PI / 180);
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                ctx.fill(); ctx.restore();
             }
         }
-
-        for (let i = 0; i < 40; i++) {
-            leaves.push(new Leaf());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            leaves.forEach(leaf => {
-                leaf.update();
-                leaf.draw();
-            });
-            requestAnimationFrame(animate);
-        }
+        for (let i = 0; i < 40; i++) leaves.push(new Leaf());
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); leaves.forEach(leaf => { leaf.update(); leaf.draw(); }); requestAnimationFrame(animate); }
         animate();
 
-        const modalWrapper = document.getElementById('modalWrapper');
-        let activeCardId = null;
+        function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
 
-        function toggleNightMode() {
-            const body = document.getElementById('pageBody');
-            body.classList.toggle('night-mode');
-            document.getElementById('switchLabel').innerText = body.classList.contains('night-mode') ? "☀️ Day Mode" : "🌙 Night Mode";
-        }
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
 
-        function toggleCard(cardId, show, e) {
-            if (e) e.stopPropagation();
-            cardId = cardId || activeCardId;
-            if (!cardId) return;
-
-            const card = document.getElementById(cardId), 
-                  num = cardId.replace('zoomCard', ''),
-                  ghost = document.getElementById('ghost-' + num),
-                  parent = document.getElementById('parent-' + num);
-
-            if(show) {
-                activeCardId = cardId;
-                ghost.style.height = card.offsetHeight + "px";
-                ghost.style.display = "block";
-                modalWrapper.appendChild(card);
-                modalWrapper.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                activeCardId = null;
-                parent.appendChild(card);
-                ghost.style.display = "none";
-                modalWrapper.classList.remove('active');
-                document.body.style.overflow = ''; 
-            }
-        }
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
