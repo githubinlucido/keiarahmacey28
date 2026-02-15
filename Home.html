@@ -94,36 +94,47 @@
         @media (max-width: 900px) { 
             .content-grid { grid-template-columns: 1fr; } 
             .frame-container { scroll-snap-align: center; min-height: 100vh; width: 100vw; }
-            .main-wrapper { padding: 0; } /* Remove side padding on wrapper */
+            .main-wrapper { padding: 0; } 
             .floating-card { 
-                width: 100vw !important; /* Full width */
-                border-radius: 0;         /* Square edges for a "full screen" feel */
+                width: 100vw !important; 
+                border-radius: 0; 
                 padding: 40px 10px; 
                 min-height: auto;
             } 
-            .godparents-wrapper { width: 100vw; transform: scale(1.1); } /* Enlarge Godparents */
+            .godparents-wrapper { width: 100vw; transform: scale(1.1); }
         }
 
         @media (max-width: 600px) { 
             .invitation-container { max-width: 95%; } 
             .km-birthday-logo-static { width: 100%; margin-top: 20px; } 
             
-            /* Enlarge location frame to fill screen */
             .location-container { width: 100vw; transform: scale(1.15); } 
             .location-frame-img { width: 100%; } 
             
-            /* RSVP Text spacing */
             .rsvp-image-format { font-size: 14px; width: 90%; }
             .rsvp-image-format p { margin-bottom: 20px; }
 
-            /* Scaling the cards up */
             .floating-card:not(.no-card) {
                 transform: scale(1.05);
-                background: rgba(255, 255, 255, 0.85); /* Slightly more solid for readability */
+                background: rgba(255, 255, 255, 0.85);
             }
 
-            /* Fix dresscode size */
-            .dresscode-img { width: 130%; margin-left: 0; }
+            /* FIX FOR DRESS CODE MARGINS */
+            .no-card {
+                padding: 0 !important; /* This removes the side gaps */
+                width: 100vw !important;
+                display: flex;
+                justify-content: center;
+                overflow: visible;
+            }
+
+            .dresscode-img { 
+                width: 120vw !important; /* Force it even wider than the screen */
+                max-width: none !important;
+                margin-left: 0 !important;
+                transform: scale(1.1); /* Zoom in */
+                display: block;
+            }
         }
         /* --- MOBILE REVISION END --- */
     </style>
