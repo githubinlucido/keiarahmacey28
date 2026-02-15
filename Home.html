@@ -90,13 +90,42 @@
         .ninang-link { width: 25%; top: 18%; left: 24%; }
         .ninong-link { width: 25%; top: 18%; left: 51%; }
 
+        /* --- MOBILE REVISION START --- */
         @media (max-width: 900px) { 
             .content-grid { grid-template-columns: 1fr; } 
-            .frame-container { scroll-snap-align: center; min-height: 100vh; }
-            .floating-card { min-height: auto; padding: 40px 25px; } 
-            .godparents-wrapper { width: 100%; } 
+            .frame-container { scroll-snap-align: center; min-height: 100vh; width: 100vw; }
+            .main-wrapper { padding: 0; } /* Remove side padding on wrapper */
+            .floating-card { 
+                width: 100vw !important; /* Full width */
+                border-radius: 0;         /* Square edges for a "full screen" feel */
+                padding: 40px 10px; 
+                min-height: auto;
+            } 
+            .godparents-wrapper { width: 100vw; transform: scale(1.1); } /* Enlarge Godparents */
         }
-        @media (max-width: 600px) { .invitation-container { max-width: 85%; } .km-birthday-logo-static { width: 100%; } .location-container { width: 100%; } .location-frame-img { width: 100%; } .rsvp-image-format { font-size: 16px; } }
+
+        @media (max-width: 600px) { 
+            .invitation-container { max-width: 95%; } 
+            .km-birthday-logo-static { width: 100%; margin-top: 20px; } 
+            
+            /* Enlarge location frame to fill screen */
+            .location-container { width: 100vw; transform: scale(1.15); } 
+            .location-frame-img { width: 100%; } 
+            
+            /* RSVP Text spacing */
+            .rsvp-image-format { font-size: 14px; width: 90%; }
+            .rsvp-image-format p { margin-bottom: 20px; }
+
+            /* Scaling the cards up */
+            .floating-card:not(.no-card) {
+                transform: scale(1.05);
+                background: rgba(255, 255, 255, 0.85); /* Slightly more solid for readability */
+            }
+
+            /* Fix dresscode size */
+            .dresscode-img { width: 130%; margin-left: 0; }
+        }
+        /* --- MOBILE REVISION END --- */
     </style>
 </head>
 <body id="pageBody">
@@ -230,7 +259,7 @@
 
         function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
 
-        const observerOptions = { threshold: 0.2 };
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
