@@ -11,14 +11,31 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        /* IMPROVED MAGNETIZED SCROLLING */
+        html { 
+            scroll-snap-type: y mandatory; 
+            scroll-behavior: smooth; 
+            height: 100%;
+            overflow-y: scroll;
+        }
 
         body, html { min-height: 100vh; width: 100%; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body::before { content: ""; position: fixed; inset: 0; background: var(--spotlight); z-index: 50; pointer-events: none; transition: 0.5s; }
 
         #leafCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 55; }
 
-        .snap-layer { scroll-snap-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; width: 100%; position: relative; }
+        /* SNAP STOP ALWAYS forces the lock-in effect */
+        .snap-layer { 
+            scroll-snap-align: center; 
+            scroll-snap-stop: always; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%; 
+            position: relative;
+            padding: 40px 0; /* Vertical margin between snaps */
+        }
 
         .reveal {
             opacity: 0;
@@ -42,7 +59,7 @@
         body.night-mode .timer-block { background: rgba(10, 12, 30, 0.6); border-color: rgba(255, 192, 203, 0.2); }
         body.night-mode .timer-lbl { color: #bbb; }
 
-        /* --- REST OF STYLES (DESKTOP) --- */
+        /* --- MODE SWITCH --- */
         .mode-switch-container { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.85); padding: 6px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -52,6 +69,7 @@
         input:checked + .slider:before { transform: translateX(14px); }
         .mode-icon { font-size: 14px; }
 
+        /* --- DESKTOP WRAPPER --- */
         .main-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; padding: 20px; z-index: 100; }
         .header-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .invitation-container { position: relative; width: 100%; max-width: 500px; display: flex; justify-content: center; align-items: center; }
@@ -105,55 +123,44 @@
         .ninang-link { width: 25%; top: 18%; left: 24%; }
         .ninong-link { width: 25%; top: 18%; left: 51%; }
 
-        /* --- MOBILE OVERRIDES (REWRITTEN FOR RESPONSIVENESS) --- */
-        @media (max-width: 900px) {
-            .content-grid { grid-template-columns: 1fr; gap: 40px; }
-            .floating-card { min-height: auto; width: 95%; margin: 0 auto; }
-            .godparents-wrapper { width: 90%; }
-        }
-
+        /* --- MOBILE REVISIONS (MAGNETIZED & ENLARGED) --- */
         @media (max-width: 600px) {
-            .snap-layer { min-height: 100vh; padding: 20px 0; }
-            .main-wrapper { padding: 10px; }
+            .snap-layer { 
+                min-height: 100vh; 
+                padding: 60px 10px; /* Stronger margins between objects */
+            }
+
+            .content-grid { grid-template-columns: 1fr; gap: 80px; } /* Space between stacked frames */
             
-            /* Invitation Fix */
-            .invitation-container { max-width: 90%; }
-            .km-birthday-logo-static { margin-top: 20px; width: 95%; }
+            /* Enlarging Location Frame */
+            .location-container { width: 100%; max-width: 100%; }
+            .location-frame-img { width: 100%; }
+            .location-content-img { width: 115%; transform: scale(0.95); margin-left: -7%; }
 
-            /* Grid to Single column for mobile */
-            .content-grid { grid-template-columns: 1fr; }
-            .frame-container { min-height: auto; padding: 20px 0; }
+            /* Enlarging Dresscode Frame */
+            .dresscode-img { width: 140%; margin-left: 20%; transform: scale(1.3); }
 
-            /* Countdown */
-            .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .timer-block { padding: 20px 5px; }
-            .countdown-title { letter-spacing: 4px; font-size: 24px; }
+            /* Horizontal Countdown Layout - Magnetized Row */
+            .timer-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 6px; 
+                width: 100%;
+            }
+            .timer-block { padding: 12px 4px; border-radius: 12px; }
+            .timer-val { font-size: 26px; } 
+            .timer-lbl { font-size: 8px; letter-spacing: 1px; }
+            .countdown-title { font-size: 20px; letter-spacing: 4px; margin-bottom: 25px; }
 
-            /* Location Container Fix */
-            .location-container { width: 100%; max-width: 350px; }
-            .location-frame-img { width: 100%; height: auto; }
-            .location-content-img { width: 110%; margin-left: -5%; }
-
-            /* Dresscode Fix */
-            .dresscode-img { width: 100%; margin-left: 0; transform: scale(1); }
-
-            /* RSVP text spacing */
-            .rsvp-image-format p { margin-bottom: 15px; font-size: 13px; }
+            /* RSVP text adjustment */
+            .rsvp-image-format p { margin-bottom: 12px; font-size: 12.5px; }
+            .floating-card { min-height: auto; padding: 25px 15px; width: 98%; }
             
             /* Godparents Fix */
-            .godparents-wrapper { width: 100%; transform: scale(1); }
-            .godparents-main-frame { transform: scale(1); }
-        }
-
-        /* Landscape/Tiny phone fix */
-        @media (max-height: 600px) {
-            .snap-layer { min-height: 120vh; }
-            .floating-card { min-height: auto; }
+            .godparents-wrapper { width: 100%; }
         }
     </style>
 </head>
 <body id="pageBody">
-
     <canvas id="leafCanvas"></canvas>
 
     <div class="mode-switch-container">
@@ -183,28 +190,14 @@
 
     <section class="snap-layer">
         <div class="main-wrapper">
-            <div class="content-grid">
-                <div class="frame-container reveal">
-                    <div class="floating-card">
-                        <img src="calendar.svg" class="calendar-main">
-                        <div class="time-row">
-                            <img src="baptism_time.svg">
-                            <img src="party_time.svg">
-                        </div>
-                        <img src="reminder_time.svg" class="reminder-img">
+            <div class="frame-container reveal">
+                <div class="floating-card">
+                    <img src="calendar.svg" class="calendar-main">
+                    <div class="time-row">
+                        <img src="baptism_time.svg">
+                        <img src="party_time.svg">
                     </div>
-                </div>
-                <div class="frame-container reveal">
-                    <div class="floating-card no-card">
-                        <div class="location-container">
-                            <img src="location_frame.svg" class="location-frame-img">
-                            <div class="frame-content-overlay">
-                                <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://maps.app.goo.gl/GhvxAHVuiD7mh2MY8')">
-                                <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://maps.app.goo.gl/3p3zChQtqfnoujvR7')">
-                                <img src="location_content.svg" class="location-content-img">
-                            </div>
-                        </div>
-                    </div>  
+                    <img src="reminder_time.svg" class="reminder-img">
                 </div>
             </div>
         </div>
@@ -212,27 +205,47 @@
 
     <section class="snap-layer">
         <div class="main-wrapper">
-            <div class="content-grid">
-                <div class="frame-container reveal">
-                    <div class="floating-card">
-                        <img src="rsvp_header.svg" class="rsvp-cloud-header" alt="RSVP Header" onclick="location.href='RSVP.html'">
-                        <div class="rsvp-image-format">
-                            <p>We would love to celebrate with you.</p>
-                            <p>To ensure we have everything prepared for your arrival, we kindly request a response by May 20.</p>
-                            <p>Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p>
-                            <br>
-                            <p>If you have questions, contact 
-                                <a href="https://www.facebook.com/kimtwishaaa?__tn__=-R" class="name-link name-kim">KIM</a> & 
-                                <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a>
-                            </p>
-                            <p>on their social media.</p>
+            <div class="frame-container reveal">
+                <div class="floating-card no-card">
+                    <div class="location-container">
+                        <img src="location_frame.svg" class="location-frame-img">
+                        <div class="frame-content-overlay">
+                            <img src="map_button1.svg" class="map-btn map-button-1" onclick="window.open('https://maps.app.goo.gl/GhvxAHVuiD7mh2MY8')">
+                            <img src="map_button2.svg" class="map-btn map-button-2" onclick="window.open('https://maps.app.goo.gl/3p3zChQtqfnoujvR7')">
+                            <img src="location_content.svg" class="location-content-img">
                         </div>
                     </div>
-                </div>
-                <div class="frame-container reveal">
-                    <div class="floating-card no-card">
-                        <img src="dresscode.svg" class="dresscode-img" alt="Dress Code">
+                </div>  
+            </div>
+        </div>
+    </section>
+
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="frame-container reveal">
+                <div class="floating-card">
+                    <img src="rsvp_header.svg" class="rsvp-cloud-header" alt="RSVP Header" onclick="location.href='RSVP.html'">
+                    <div class="rsvp-image-format">
+                        <p>We would love to celebrate with you.</p>
+                        <p>To ensure we have everything prepared for your arrival, we kindly request a response by May 20.</p>
+                        <p>Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p>
+                        <br>
+                        <p>If you have questions, contact 
+                            <a href="https://www.facebook.com/kimtwishaaa?__tn__=-R" class="name-link name-kim">KIM</a> & 
+                            <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a>
+                        </p>
+                        <p>on their social media.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="frame-container reveal">
+                <div class="floating-card no-card">
+                    <img src="dresscode.svg" class="dresscode-img" alt="Dress Code">
                 </div>
             </div>
         </div>
@@ -276,7 +289,6 @@
     </section>
 
     <script>
-        // Countdown Logic
         const targetDate = new Date("May 31, 2026 00:00:00").getTime();
         function updateCountdown() {
             const now = new Date().getTime();
@@ -290,7 +302,6 @@
         }
         setInterval(updateCountdown, 1000); updateCountdown();
 
-        // Canvas Leaf Animation
         const canvas = document.getElementById('leafCanvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
