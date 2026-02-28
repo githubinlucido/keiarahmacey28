@@ -13,12 +13,12 @@
         
         html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
 
-        body, html { min-height: 100vh; width: 100%; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: sans-serif; }
+        body, html { min-height: 100vh; width: 100%; background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('Wallpaper.svg') center/cover no-repeat fixed; overflow-x: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body::before { content: ""; position: fixed; inset: 0; background: var(--spotlight); z-index: 50; pointer-events: none; transition: 0.5s; }
 
         #leafCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 55; }
 
-        .snap-layer { scroll-snap-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; width: 100%; }
+        .snap-layer { scroll-snap-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; width: 100%; position: relative; }
 
         .reveal {
             opacity: 0;
@@ -28,6 +28,21 @@
         
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
 
+        /* --- MEGA COUNTDOWN DESIGN --- */
+        .mega-countdown-wrapper { width: 95%; max-width: 900px; text-align: center; padding: 50px 20px; }
+        .countdown-title { font-family: 'Baskerville', serif; font-size: clamp(24px, 5vw, 40px); color: #ff8fa3; text-transform: uppercase; letter-spacing: 8px; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .timer-block { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 30px 10px; box-shadow: 0 20px 40px rgba(255, 182, 193, 0.2); transition: transform 0.4s ease, box-shadow 0.4s ease; position: relative; overflow: hidden; }
+        .timer-block:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 30px 50px rgba(255, 143, 163, 0.4); background: rgba(255, 255, 255, 0.7); }
+        .timer-val { display: block; font-size: clamp(40px, 8vw, 85px); font-weight: 900; line-height: 1; background: linear-gradient(45deg, #ff8fa3, #d6a4cc, #8eb9e5, #ff8fa3); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 5s infinite linear; }
+        .timer-lbl { font-size: clamp(10px, 2vw, 14px); color: #777; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; margin-top: 10px; }
+
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        body.night-mode .timer-block { background: rgba(10, 12, 30, 0.6); border-color: rgba(255, 192, 203, 0.2); }
+        body.night-mode .timer-lbl { color: #bbb; }
+
+        /* --- REST OF STYLES (DESKTOP) --- */
         .mode-switch-container { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.85); padding: 6px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -90,53 +105,51 @@
         .ninang-link { width: 25%; top: 18%; left: 24%; }
         .ninong-link { width: 25%; top: 18%; left: 51%; }
 
-        /* --- MOBILE REVISION START --- */
-        @media (max-width: 900px) { 
-            .content-grid { grid-template-columns: 1fr; } 
-            .frame-container { scroll-snap-align: center; min-height: 100vh; width: 100vw; }
-            .main-wrapper { padding: 0; } 
-            .floating-card { 
-                width: 100vw !important; 
-                border-radius: 0; 
-                padding: 40px 10px; 
-                min-height: auto;
-            } 
-            .godparents-wrapper { width: 100vw; transform: scale(1.1); }
+        /* --- MOBILE OVERRIDES (REWRITTEN FOR RESPONSIVENESS) --- */
+        @media (max-width: 900px) {
+            .content-grid { grid-template-columns: 1fr; gap: 40px; }
+            .floating-card { min-height: auto; width: 95%; margin: 0 auto; }
+            .godparents-wrapper { width: 90%; }
         }
 
-        @media (max-width: 600px) { 
-            .invitation-container { max-width: 95%; } 
-            .km-birthday-logo-static { width: 100%; margin-top: 20px; } 
+        @media (max-width: 600px) {
+            .snap-layer { min-height: 100vh; padding: 20px 0; }
+            .main-wrapper { padding: 10px; }
             
-            .location-container { width: 100vw; transform: scale(1.15); } 
-            .location-frame-img { width: 100%; } 
+            /* Invitation Fix */
+            .invitation-container { max-width: 90%; }
+            .km-birthday-logo-static { margin-top: 20px; width: 95%; }
+
+            /* Grid to Single column for mobile */
+            .content-grid { grid-template-columns: 1fr; }
+            .frame-container { min-height: auto; padding: 20px 0; }
+
+            /* Countdown */
+            .timer-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .timer-block { padding: 20px 5px; }
+            .countdown-title { letter-spacing: 4px; font-size: 24px; }
+
+            /* Location Container Fix */
+            .location-container { width: 100%; max-width: 350px; }
+            .location-frame-img { width: 100%; height: auto; }
+            .location-content-img { width: 110%; margin-left: -5%; }
+
+            /* Dresscode Fix */
+            .dresscode-img { width: 100%; margin-left: 0; transform: scale(1); }
+
+            /* RSVP text spacing */
+            .rsvp-image-format p { margin-bottom: 15px; font-size: 13px; }
             
-            .rsvp-image-format { font-size: 14px; width: 90%; }
-            .rsvp-image-format p { margin-bottom: 20px; }
-
-            .floating-card:not(.no-card) {
-                transform: scale(1.05);
-                background: rgba(255, 255, 255, 0.85);
-            }
-
-            /* FIX FOR DRESS CODE MARGINS */
-            .no-card {
-                padding: 0 !important; /* This removes the side gaps */
-                width: 100vw !important;
-                display: flex;
-                justify-content: center;
-                overflow: visible;
-            }
-
-            .dresscode-img { 
-                width: 120vw !important; /* Force it even wider than the screen */
-                max-width: none !important;
-                margin-left: 0 !important;
-                transform: scale(1.1); /* Zoom in */
-                display: block;
-            }
+            /* Godparents Fix */
+            .godparents-wrapper { width: 100%; transform: scale(1); }
+            .godparents-main-frame { transform: scale(1); }
         }
-        /* --- MOBILE REVISION END --- */
+
+        /* Landscape/Tiny phone fix */
+        @media (max-height: 600px) {
+            .snap-layer { min-height: 120vh; }
+            .floating-card { min-height: auto; }
+        }
     </style>
 </head>
 <body id="pageBody">
@@ -203,7 +216,6 @@
                 <div class="frame-container reveal">
                     <div class="floating-card">
                         <img src="rsvp_header.svg" class="rsvp-cloud-header" alt="RSVP Header" onclick="location.href='RSVP.html'">
-                        
                         <div class="rsvp-image-format">
                             <p>We would love to celebrate with you.</p>
                             <p>To ensure we have everything prepared for your arrival, we kindly request a response by May 20.</p>
@@ -239,13 +251,51 @@
         </div>
     </section>
 
+    <section class="snap-layer">
+        <div class="mega-countdown-wrapper reveal">
+            <h2 class="countdown-title">Saving the Date</h2>
+            <div class="timer-grid">
+                <div class="timer-block">
+                    <span class="timer-val" id="days">00</span>
+                    <span class="timer-lbl">Days</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="hours">00</span>
+                    <span class="timer-lbl">Hrs</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="minutes">00</span>
+                    <span class="timer-lbl">Min</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="seconds">00</span>
+                    <span class="timer-lbl">Sec</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
+        // Countdown Logic
+        const targetDate = new Date("May 31, 2026 00:00:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+            if (gap < 0) return;
+            const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+            document.getElementById("days").innerText = Math.floor(gap / day);
+            document.getElementById("hours").innerText = Math.floor((gap % day) / hour);
+            document.getElementById("minutes").innerText = Math.floor((gap % hour) / minute);
+            document.getElementById("seconds").innerText = Math.floor((gap % minute) / second);
+        }
+        setInterval(updateCountdown, 1000); updateCountdown();
+
+        // Canvas Leaf Animation
         const canvas = document.getElementById('leafCanvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resize); resize();
         class Leaf {
             constructor() { this.reset(); }
             reset() {
@@ -273,14 +323,10 @@
         const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                } else {
-                    entry.target.classList.remove('active');
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('active'); }
+                else { entry.target.classList.remove('active'); }
             });
         }, observerOptions);
-
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
