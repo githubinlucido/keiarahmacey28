@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keiarah Macey - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root { --night-bg: transparent; --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%); }
         body.night-mode { --night-bg: rgba(10, 12, 30, 0.85); --spotlight: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 12, 30, 0.9) 80%); }
@@ -44,11 +46,31 @@
 
         /* --- MEGA COUNTDOWN DESIGN --- */
         .mega-countdown-wrapper { width: 95%; max-width: 900px; text-align: center; padding: 50px 20px; }
-        .countdown-title { font-family: 'Baskerville', serif; font-size: clamp(24px, 5vw, 40px); color: #ff8fa3; text-transform: uppercase; letter-spacing: 8px; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        .countdown-title { 
+    font-family: "Great Vibes", cursive;
+    font-size: 104px;
+  font-weight: 400;
+  font-style: normal;
+    color: #ff8fa3; 
+    letter-spacing: 2px; /* Reduced spacing for better readability in cursive */
+    margin-bottom: 40px; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); 
+}
         .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .timer-block { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 30px 10px; box-shadow: 0 20px 40px rgba(255, 182, 193, 0.2); transition: transform 0.4s ease, box-shadow 0.4s ease; position: relative; overflow: hidden; }
         .timer-block:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 30px 50px rgba(255, 143, 163, 0.4); background: rgba(255, 255, 255, 0.7); }
-        .timer-val { display: block; font-size: clamp(40px, 8vw, 85px); font-weight: 900; line-height: 1; background: linear-gradient(45deg, #ff8fa3, #d6a4cc, #8eb9e5, #ff8fa3); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 5s infinite linear; }
+       .timer-val { 
+    display: block; 
+    font-family: 'Great Vibes', cursive; /* Matches the title */
+    font-size: clamp(50px, 10vw, 95px); 
+    font-weight: 600; 
+    line-height: 1; 
+    background: linear-gradient(45deg, #ff8fa3, #d6a4cc, #8eb9e5, #ff8fa3); 
+    background-size: 300% 300%; 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    animation: gradientShift 5s infinite linear; 
+}
         .timer-lbl { font-size: clamp(10px, 2vw, 14px); color: #777; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; margin-top: 10px; }
 
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -156,9 +178,38 @@
 
             .rsvp-image-format p { margin-bottom: 15px; font-size: 13px; }
             .floating-card { min-height: auto; padding: 20px 15px; }
-            
             .godparents-wrapper { width: 100%; }
         }
+        /* Styling for the new photo section */
+.photo-container {
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    animation: breathing 6s infinite ease-in-out;
+}
+
+.macey-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 600px) {
+    .photo-container {
+        width: 95%;
+        padding: 10px;
+        border-radius: 20px;
+    }
+}
     </style>
 </head>
 <body id="pageBody">
@@ -188,7 +239,13 @@
             </div>
         </div>
     </section>
-
+<section class="snap-layer">
+        <div class="main-wrapper">
+            <div class="photo-container reveal">
+                <img src="maceyphoto.svg" class="macey-photo" alt="Keiarah Macey">
+            </div>
+        </div>
+    </section>
     <section class="snap-layer">
         <div class="main-wrapper">
             <div class="content-grid">
@@ -231,9 +288,8 @@
                             <br>
                             <p>If you have questions, contact 
                                 <a href="https://www.facebook.com/kimtwishaaa?__tn__=-R" class="name-link name-kim">KIM</a> & 
-                                <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a>
-                            </p>
-                            <p>on their social media.</p>
+                                <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a> on their social media.
+                            
                         </div>
                     </div>
                 </div>
@@ -261,7 +317,7 @@
 
     <section class="snap-layer">
         <div class="mega-countdown-wrapper reveal">
-            <h2 class="countdown-title">Save the Date</h2>
+            <h2 class="countdown-title">Save the Date!</h2>
             <div class="timer-grid">
                 <div class="timer-block">
                     <span class="timer-val" id="days">00</span>
