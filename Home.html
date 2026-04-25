@@ -117,14 +117,23 @@
         .location-frame-img { width: 532px; height: auto; display: block; }
         .frame-content-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
         .map-btn { position: absolute; width: 10%; cursor: pointer; pointer-events: auto; z-index: 20; }
-        .map-button-1 { top: 53%; left: 50%; } 
-        .map-button-2 { top: 76%; left: 50%; }
+        .map-button-1 { top: 54%; left: 50%; } 
+        .map-button-2 { top: 77%; left: 50%; }
         .location-content-img { width: 120%; transform: scale(0.88); pointer-events: none; margin-left: -30px; margin-bottom: 20px; }
 
         .rsvp-image-format { text-align: center; color: #ff8fa3; font-family: 'Baskerville', 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 1px; line-height: 1.3; font-size: 15px; transform: scaleY(1.1); }
         .rsvp-image-format p { margin-bottom: 35px; }
-        .rsvp-cloud-header { width: 80%; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s; }
-        .rsvp-cloud-header:hover { transform: scale(1.05); }
+        .rsvp-cloud-header { width: 80%; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s; animation: wiggle 3s infinite ease-in-out;
+    
+    /* Keep the shadow for depth */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));}
+    @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-3deg); }
+    20%, 40%, 60%, 80% { transform: rotate(3deg); }
+}
+        .rsvp-cloud-header:hover { transform: scale(1.05); animation-play-state: paused;
+    transform: scale(1.05); /* Optional: slight grow effect on hover */}
 
         .name-link { text-decoration: none; font-weight: bold; transition: opacity 0.3s; }
         .name-link:hover { opacity: 0.7; }
@@ -168,7 +177,7 @@
     }
 
     .map-button-2 {
-        top: 72%; 
+        top: 73%; 
         left: 48%;
     }
 
@@ -257,7 +266,7 @@
 <section class="snap-layer">
         <div class="main-wrapper">
             <div class="photo-container reveal">
-                <img src="Maceyphoto.svg" class="macey-photo" alt="Keiarah Macey">
+                <img src="maceyphoto.svg" class="macey-photo" alt="Keiarah Macey">
             </div>
         </div>
     </section>
