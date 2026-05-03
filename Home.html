@@ -262,7 +262,7 @@
 <body id="pageBody">
     <!-- The 'hidden' attribute ensures it doesn't take up any space -->
 <audio id="bgMusic" loop hidden>
-    <source src="birthday_song.mp3" type="audio/mpeg">
+    <source src="Little Joys.mp3" type="audio/mpeg">
 </audio>
     <canvas id="leafCanvas"></canvas>
 
@@ -496,26 +496,28 @@
         function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
         const obs = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), {threshold: 0.1});
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+
     </script>
     <script>
-    // This function attempts to play the music
-    function playBackgroundMusic() {
-        const audio = document.getElementById('bgMusic');
-        audio.play().catch(error => {
-            // This catches errors if the browser still blocks it
-            console.log("Autoplay prevented. Music will start on next interaction.");
+    const audio = document.getElementById('bgMusic');
+
+    function startMusic() {
+        audio.play().then(() => {
+            // Success! Remove listeners so they don't fire again
+            ['click', 'touchstart', 'scroll'].forEach(event => 
+                document.removeEventListener(event, startMusic)
+            );
+        }).catch(error => {
+            console.log("Playback blocked; waiting for user interaction.");
         });
-        
-        // Remove the listeners once the music starts so they don't run again
-        document.removeEventListener('click', playBackgroundMusic);
-        document.removeEventListener('touchstart', playBackgroundMusic);
-        document.removeEventListener('scroll', playBackgroundMusic);
     }
 
-    // Listen for common user interactions
-    document.addEventListener('click', playBackgroundMusic);
-    document.addEventListener('touchstart', playBackgroundMusic);
-    document.addEventListener('scroll', playBackgroundMusic);
+    // Assign listeners for any user movement or click
+    ['click', 'touchstart', 'scroll'].forEach(event => 
+        document.addEventListener(event, startMusic)
+    );
 </script>
+    
 </body>
 </html>
