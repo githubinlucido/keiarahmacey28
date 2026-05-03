@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keiarah Macey - Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        :root { --night-bg: transparent; --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%); }
+        :root { 
+            --night-bg: transparent; 
+            --spotlight: radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0) 0%, rgba(10, 12, 30, 0) 70%); 
+            --accent: #ff8fa3;
+        }
         body.night-mode { --night-bg: rgba(10, 12, 30, 0.85); --spotlight: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 12, 30, 0.9) 80%); }
         body.night-mode .inner-content img, body.night-mode .floating-card img:not(.location-frame-img), body.night-mode .km-birthday-logo-static { filter: brightness(0.8) drop-shadow(0 0 8px rgba(255, 192, 203, 0.5)); }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* 1. Improved Snap Type */
         html { 
             scroll-snap-type: y mandatory; 
             scroll-behavior: smooth; 
@@ -24,7 +26,6 @@
 
         #leafCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 55; }
 
-        /* 2. Enhanced Snap Layer logic */
         .snap-layer { 
             scroll-snap-align: center; 
             scroll-snap-stop: always;
@@ -44,47 +45,145 @@
         
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* --- MEGA COUNTDOWN DESIGN --- */
+        /* --- LUXURY CAROUSEL STYLES --- */
+        .photo-container {
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(255, 143, 163, 0.25);
+        }
+
+        .carousel-viewport {
+            width: 100%;
+            height: 500px; /* Adjust based on your photo preference */
+            overflow: hidden;
+            border-radius: 30px;
+            position: relative;
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1.2s ease-in-out;
+            transform: scale(1.1); /* Pre-zoom for parallax effect */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            transform: scale(1); /* Smooth zoom-in when active */
+            z-index: 1;
+        }
+
+        .macey-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 30px;
+        }
+
+        /* Navigation Arrows */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 20px;
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .photo-container:hover .nav-btn { opacity: 1; }
+        .nav-btn:hover { background: var(--accent); color: white; }
+        .prev-btn { left: 30px; }
+        .next-btn { right: 30px; }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 5;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.1s linear;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 143, 163, 0.3);
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .dot.active {
+            width: 30px;
+            background: var(--accent);
+        }
+
+        /* --- REST OF YOUR DESIGN --- */
         .mega-countdown-wrapper { width: 95%; max-width: 900px; text-align: center; padding: 50px 20px; }
         .countdown-title { 
-    font-family: "Great Vibes", cursive;
-    font-size: 104px;
-  font-weight: 400;
-  font-style: normal;
-    color: #ff8fa3; 
-    letter-spacing: 2px; /* Reduced spacing for better readability in cursive */
-    margin-bottom: 40px; 
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); 
-}
+            font-family: "Great Vibes", cursive;
+            font-size: 104px;
+            font-weight: 400;
+            color: var(--accent); 
+            letter-spacing: 2px; 
+            margin-bottom: 40px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); 
+        }
         .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .timer-block { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 30px 10px; box-shadow: 0 20px 40px rgba(255, 182, 193, 0.2); transition: transform 0.4s ease, box-shadow 0.4s ease; position: relative; overflow: hidden; }
-        .timer-block:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 30px 50px rgba(255, 143, 163, 0.4); background: rgba(255, 255, 255, 0.7); }
-       .timer-val { 
-    display: block; 
-    font-family: 'Great Vibes', cursive; /* Matches the title */
-    font-size: clamp(50px, 10vw, 95px); 
-    font-weight: 600; 
-    line-height: 1; 
-    background: linear-gradient(45deg, #ff8fa3, #d6a4cc, #8eb9e5, #ff8fa3); 
-    background-size: 300% 300%; 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    animation: gradientShift 5s infinite linear; 
-}
+        .timer-block { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 25px; padding: 30px 10px; box-shadow: 0 20px 40px rgba(255, 182, 193, 0.2); transition: 0.4s ease; position: relative; overflow: hidden; }
+        .timer-val { 
+            display: block; font-family: 'Great Vibes', cursive; font-size: clamp(50px, 10vw, 95px); 
+            font-weight: 600; line-height: 1; background: linear-gradient(45deg, #ff8fa3, #d6a4cc, #8eb9e5, #ff8fa3); 
+            background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 5s infinite linear; 
+        }
         .timer-lbl { font-size: clamp(10px, 2vw, 14px); color: #777; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; margin-top: 10px; }
 
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        body.night-mode .timer-block { background: rgba(10, 12, 30, 0.6); border-color: rgba(255, 192, 203, 0.2); }
-        body.night-mode .timer-lbl { color: #bbb; }
-
-        /* --- REST OF STYLES --- */
         .mode-switch-container { position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.85); padding: 6px 12px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
         .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #ff8fa3; }
+        input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(14px); }
 
         .main-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; padding: 20px; z-index: 100; }
@@ -93,50 +192,24 @@
         .envelope-open { width: 100%; z-index: 5; position: relative; }
         .inner-content { position: absolute; width: 50%; top: 12%; z-index: 10; left: 50%; transform: translateX(-50%); }
         .flower-layer { position: absolute; pointer-events: none; width: 135%; left: 50%; transform: translateX(-50%); }
-        .back-layer { z-index: 4; top: 20%; left:45%; }
-        .front-layer { z-index: 15; bottom: -10%; }
         .km-birthday-logo-static { width: 90%; max-width: 600px; margin-top: 50px; z-index: 60; position: relative; }
 
-        .content-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; align-items: stretch; }
+        .content-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
         .frame-container { width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
         
+        .floating-card { background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 480px; animation: breathing 4s infinite; transition: 0.3s; }
         @keyframes breathing { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
         
-        .floating-card { background: rgba(255, 255, 255, 0.7); padding: 25px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); cursor: default; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 480px; animation: breathing 4s infinite; transition: 0.3s; }
-        .no-card { background: transparent !important; box-shadow: none !important; border: none !important; }
-
-        .calendar-main { width: 55%; margin-bottom: 10px; }
-        .time-row { display: flex; gap: 10px; width: 90%; justify-content: center; }
-        .time-row img { width: 45%; }
-        .time-row img:nth-child(2) { width: 45%; transform: scale(1.2); margin-left: -5%; }
-        .reminder-img { width: 85%; margin-top: 10px; }
-        
-        .dresscode-img { width: 150%; max-width: 2000px; height: auto; margin-left: 10%; }
-        
-        .location-container { position: relative; width: 550px; display: flex; justify-content: center; }
-        .location-frame-img { width: 532px; height: auto; display: block; }
+        .location-container { position: relative; width: 100%; max-width: 550px; display: flex; justify-content: center; }
+        .location-frame-img { width: 100%; height: auto; display: block; }
         .frame-content-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
-        .map-btn { position: absolute; width: 10%; cursor: pointer; pointer-events: auto; z-index: 20; }
+        .map-btn { position: absolute; width: 10%; cursor: pointer; pointer-events: auto; z-index: 20; transition: 0.3s; }
+        .map-btn:hover { transform: scale(1.15); }
         .map-button-1 { top: 54%; left: 50%; } 
         .map-button-2 { top: 77%; left: 50%; }
         .location-content-img { width: 120%; transform: scale(0.88); pointer-events: none; margin-left: -30px; margin-bottom: 20px; }
 
-        .rsvp-image-format { text-align: center; color: #ff8fa3; font-family: 'Baskerville', 'Times New Roman', serif; text-transform: uppercase; letter-spacing: 1px; line-height: 1.3; font-size: 15px; transform: scaleY(1.1); }
-        .rsvp-image-format p { margin-bottom: 35px; }
-        .rsvp-cloud-header { width: 80%; margin-bottom: 15px; cursor: pointer; transition: transform 0.3s; animation: wiggle 3s infinite ease-in-out;
-    
-    /* Keep the shadow for depth */
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));}
-    @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    10%, 30%, 50%, 70%, 90% { transform: rotate(-3deg); }
-    20%, 40%, 60%, 80% { transform: rotate(3deg); }
-}
-        .rsvp-cloud-header:hover { transform: scale(1.05); animation-play-state: paused;
-    transform: scale(1.05); /* Optional: slight grow effect on hover */}
-
         .name-link { text-decoration: none; font-weight: bold; transition: opacity 0.3s; }
-        .name-link:hover { opacity: 0.7; }
         .name-kim { color: #d6a4cc; }
         .name-jm { color: #8eb9e5; }
 
@@ -149,91 +222,15 @@
         .ninang-link { width: 25%; top: 18%; left: 24%; }
         .ninong-link { width: 25%; top: 18%; left: 51%; }
 
-        /* --- MOBILE REVISIONS --- */
         @media (max-width: 600px) {
-            /* 3. Force Grid to allow individual snap points */
-            .content-grid { 
-                grid-template-columns: 1fr; 
-                gap: 80px; /* This is the margin between your objects */
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-            }
-
-            /* 4. Ensure each frame snaps perfectly */
-            .frame-container { 
-                scroll-snap-align: center; 
-                scroll-snap-stop: always;
-                min-height: 80vh; /* Ensures it takes enough room to snap effectively */
-            }
-            .map-btn {
-        width: 12%; /* Slightly larger for easier tapping on mobile */
-    }
-
-    /* Adjust the specific top/left positions */
-    .map-button-1 {
-        top: 52%; /* Tweak these percentages until they align */
-        left: 48%; 
-    }
-
-    .map-button-2 {
-        top: 73%; 
-        left: 48%;
-    }
-
-            .main-wrapper { padding: 10px; }
-            
-            .location-container { width: 100%; max-width: 100%; }
-            .location-frame-img { width: 100%; }
-            .location-content-img { width: 110%; transform: scale(0.9); margin-left: -5%; }
-
-            .dresscode-img { width: 120%; margin-left:15%; transform: scale(1.4); }
-
-            .timer-grid { 
-                grid-template-columns: repeat(4, 1fr); 
-                gap: 8px; 
-                width: 100%;
-            }
-            .timer-block { padding: 15px 5px; border-radius: 12px; }
+            .content-grid { grid-template-columns: 1fr; gap: 80px; display: flex; flex-direction: column; }
+            .frame-container { scroll-snap-align: center; scroll-snap-stop: always; min-height: 80vh; }
+            .countdown-title { font-size: 40px; }
+            .carousel-viewport { height: 350px; }
+            .timer-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
             .timer-val { font-size: 28px; }
-            .timer-lbl { font-size: 9px; letter-spacing: 1px; }
-            .countdown-title { font-size: 40px; letter-spacing: 4px; margin-bottom: 20px; }
-
-            .rsvp-image-format p { margin-bottom: 15px; font-size: 13px; }
-            .floating-card { min-height: auto; padding: 20px 15px; }
-            .godparents-wrapper { width: 100%; }
+            .dresscode-img { width: 120%; margin-left:15%; transform: scale(1.4); }
         }
-        /* Styling for the new photo section */
-.photo-container {
-    width: 90%;
-    max-width: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    border-radius: 30px;
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    animation: breathing 6s infinite ease-in-out;
-}
-
-.macey-photo {
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-}
-
-/* Ensure mobile responsiveness */
-@media (max-width: 600px) {
-    .photo-container {
-        width: 95%;
-        padding: 10px;
-        border-radius: 20px;
-    }
-}
-
     </style>
 </head>
 <body id="pageBody">
@@ -248,43 +245,65 @@
         <span class="mode-icon">🌙</span>
     </div>
 
+    <!-- Section 1: Intro -->
     <section class="snap-layer">
         <div class="main-wrapper">
             <div class="header-section reveal">
                 <div class="invitation-container">
-                    <img src="back flowers.svg" class="flower-layer back-layer">
+                    <img src="back flowers.svg" class="flower-layer" style="z-index:4; top:20%; left:45%;">
                     <img src="open_envelope.svg" class="envelope-open">
                     <div class="inner-content">
                         <img src="youre_invited.svg" style="width:100%">
                     </div>
-                    <img src="front flowers.svg" class="flower-layer front-layer">
+                    <img src="front flowers.svg" class="flower-layer" style="z-index:15; bottom:-10%;">
                 </div>
                 <img src="km_1stbirthday.svg" class="km-birthday-logo-static">
             </div>
         </div>
     </section>
-<section class="snap-layer">
+
+    <!-- Section 2: THE LUXURY CAROUSEL -->
+    <section class="snap-layer">
         <div class="main-wrapper">
             <div class="photo-container reveal">
-                <img src="maceyphoto.svg" class="macey-photo" alt="Keiarah Macey">
+                <button class="nav-btn prev-btn" onclick="prevSlide()">❮</button>
+                <button class="nav-btn next-btn" onclick="nextSlide()">❯</button>
+                
+                <div class="carousel-viewport">
+                    <div class="carousel-item active"><img src="maceyphoto.svg" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey1.jpg" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey2.png" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey3.png" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey4.png" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey5.png" class="macey-photo"></div>
+                    <div class="carousel-item"><img src="macey6.jpg" class="macey-photo"></div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div class="carousel-dots" id="carouselDots"></div>
             </div>
         </div>
     </section>
+
+    <!-- Section 3: When & Where -->
     <section class="snap-layer">
         <div class="main-wrapper">
             <div class="content-grid">
                 <div class="frame-container reveal">
                     <div class="floating-card">
-                        <img src="calendar.svg" class="calendar-main">
-                        <div class="time-row">
-                            <img src="baptism_time.svg">
-                            <img src="party_time.svg">
+                        <img src="calendar.svg" style="width:55%; margin-bottom:10px;">
+                        <div style="display:flex; gap:10px; width:90%; justify-content:center;">
+                            <img src="baptism_time.svg" style="width:45%;">
+                            <img src="party_time.svg" style="width:45%; transform:scale(1.2);">
                         </div>
-                        <img src="reminder_time.svg" class="reminder-img">
+                        <img src="reminder_time.svg" style="width:85%; margin-top:10px;">
                     </div>
                 </div>
                 <div class="frame-container reveal">
-                    <div class="floating-card no-card">
+                    <div class="floating-card" style="background:transparent; box-shadow:none;">
                         <div class="location-container">
                             <img src="location_frame.svg" class="location-frame-img">
                             <div class="frame-content-overlay">
@@ -299,30 +318,22 @@
         </div>
     </section>
 
+    <!-- Section 4: RSVP -->
     <section class="snap-layer">
         <div class="main-wrapper">
             <div class="content-grid">
                 <div class="frame-container reveal">
                     <div class="floating-card">
-                        
-                        <img src="rsvp_header.svg" class="rsvp-cloud-header" alt="RSVP Header" onclick="location.href='RSVP.html'">
-                        
-                        <div class="rsvp-image-format">
-                            <p>We would love to celebrate with you.</p>
-                            <p>To ensure we have everything prepared for your arrival, we kindly request a response by May 20.</p>
-                            <p>Please keep in mind that after that date, unconfirmed invites will be made available to other guests.</p>
-                            <p>Please confirm your attendance by clicking the RSVP header or the link below.<br><a href="RSVP.html" >RSVP Form</a></p>
-                            
-                            
-                            <p>If you have questions, contact 
-                                <a href="https://www.facebook.com/kimtwishaaa?__tn__=-R" class="name-link name-kim">KIM</a> & 
-                                <a href="https://www.facebook.com/johnmark.inlucido?__tn__=-R" class="name-link name-jm">JM</a> on their social media.
-                            
+                        <img src="rsvp_header.svg" style="width:80%; margin-bottom:15px; cursor:pointer;" onclick="location.href='RSVP.html'">
+                        <div style="text-align:center; color:#ff8fa3; font-family:serif; text-transform:uppercase; font-size:14px;">
+                            <p style="margin-bottom:20px;">We would love to celebrate with you.</p>
+                            <p style="margin-bottom:20px;">Kindly request a response by May 20.</p>
+                            <p style="margin-bottom:20px;">Contact <a href="#" class="name-link name-kim">KIM</a> & <a href="#" class="name-link name-jm">JM</a></p>
                         </div>
                     </div>
                 </div>
                 <div class="frame-container reveal">
-                    <div class="floating-card no-card">
+                    <div class="floating-card" style="background:transparent; box-shadow:none;">
                         <img src="dresscode.svg" class="dresscode-img" alt="Dress Code">
                     </div>
                 </div>
@@ -330,57 +341,103 @@
         </div>
     </section>
 
+    <!-- Section 5: Godparents -->
     <section class="snap-layer">
         <div class="main-wrapper">
             <div class="godparents-wrapper reveal">
-                <img src="godparent_frame.svg" class="godparent-bg-frame" alt="Background Frame">
+                <img src="godparent_frame.svg" class="godparent-bg-frame">
                 <div class="godparents-content-overlay">
-                    <img src="godparents.svg" class="godparents-main-frame" alt="Godparents Content">
-                    <a href="ninang.html"><img src="ninang.svg" class="clickable-object ninang-link" alt="Ninangs"></a>
-                    <a href="ninong.html"><img src="ninong.svg" class="clickable-object ninong-link" alt="Ninongs"></a>
+                    <img src="godparents.svg" class="godparents-main-frame">
+                    <a href="ninang.html"><img src="ninang.svg" class="clickable-object ninang-link"></a>
+                    <a href="ninong.html"><img src="ninong.svg" class="clickable-object ninong-link"></a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Section 6: Countdown -->
     <section class="snap-layer">
         <div class="mega-countdown-wrapper reveal">
             <h2 class="countdown-title">Save the Date!</h2>
             <div class="timer-grid">
-                <div class="timer-block">
-                    <span class="timer-val" id="days">00</span>
-                    <span class="timer-lbl">Days</span>
-                </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="hours">00</span>
-                    <span class="timer-lbl">Hrs</span>
-                </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="minutes">00</span>
-                    <span class="timer-lbl">Min</span>
-                </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="seconds">00</span>
-                    <span class="timer-lbl">Sec</span>
-                </div>
+                <div class="timer-block"><span class="timer-val" id="days">00</span><span class="timer-lbl">Days</span></div>
+                <div class="timer-block"><span class="timer-val" id="hours">00</span><span class="timer-lbl">Hrs</span></div>
+                <div class="timer-block"><span class="timer-val" id="minutes">00</span><span class="timer-lbl">Min</span></div>
+                <div class="timer-block"><span class="timer-val" id="seconds">00</span><span class="timer-lbl">Sec</span></div>
             </div>
         </div>
     </section>
 
     <script>
+        // --- 1. LUXURY CAROUSEL LOGIC ---
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const dotsContainer = document.getElementById('carouselDots');
+        const progressFill = document.getElementById('progressFill');
+        const autoTime = 5000; // 5 seconds per slide
+        let startTimestamp;
+        let requestID;
+
+        // Create Dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.onclick = () => showSlide(i);
+            dotsContainer.appendChild(dot);
+        });
+
+        function showSlide(n) {
+            slides[slideIndex].classList.remove('active');
+            document.querySelectorAll('.dot')[slideIndex].classList.remove('active');
+            
+            slideIndex = (n + slides.length) % slides.length;
+            
+            slides[slideIndex].classList.add('active');
+            document.querySelectorAll('.dot')[slideIndex].classList.add('active');
+            
+            // Reset Progress Bar Animation
+            resetProgressBar();
+        }
+
+        function nextSlide() { showSlide(slideIndex + 1); }
+        function prevSlide() { showSlide(slideIndex - 1); }
+
+        function resetProgressBar() {
+            startTimestamp = performance.now();
+            if (requestID) cancelAnimationFrame(requestID);
+            animateProgress();
+        }
+
+        function animateProgress() {
+            const now = performance.now();
+            const elapsed = now - startTimestamp;
+            const progress = Math.min((elapsed / autoTime) * 100, 100);
+            
+            progressFill.style.width = progress + "%";
+            
+            if (progress < 100) {
+                requestID = requestAnimationFrame(animateProgress);
+            } else {
+                nextSlide();
+            }
+        }
+
+        resetProgressBar(); // Start the cycle
+
+        // --- 2. COUNTDOWN LOGIC ---
         const targetDate = new Date("May 31, 2026 00:00:00").getTime();
-        function updateCountdown() {
+        setInterval(() => {
             const now = new Date().getTime();
             const gap = targetDate - now;
-            if (gap < 0) return;
             const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
             document.getElementById("days").innerText = Math.floor(gap / day);
             document.getElementById("hours").innerText = Math.floor((gap % day) / hour);
             document.getElementById("minutes").innerText = Math.floor((gap % hour) / minute);
             document.getElementById("seconds").innerText = Math.floor((gap % minute) / second);
-        }
-        setInterval(updateCountdown, 1000); updateCountdown();
+        }, 1000);
 
+        // --- 3. LEAF ANIMATION ---
         const canvas = document.getElementById('leafCanvas');
         const ctx = canvas.getContext('2d');
         let leaves = [];
@@ -390,11 +447,10 @@
             constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width; this.y = -20;
-                this.size = Math.random() * 8 + 4; this.speed = Math.random() * 2 + 2; 
+                this.size = Math.random() * 8 + 4; this.speed = Math.random() * 2 + 1; 
                 this.wind = Math.random() * 1.5 - 0.75; this.rotation = Math.random() * 360;
-                this.rotationSpeed = Math.random() * 4 - 2; this.opacity = Math.random() * 0.4 + 0.6; 
-                const colors = ['#ffd1dc', '#ffb7c5', '#f8c8dc', '#fff5ba'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.rotationSpeed = Math.random() * 2 - 1; this.opacity = Math.random() * 0.4 + 0.4; 
+                this.color = ['#ffd1dc', '#ffb7c5', '#f8c8dc'][Math.floor(Math.random() * 3)];
             }
             update() { this.y += this.speed; this.x += this.wind; this.rotation += this.rotationSpeed; if (this.y > canvas.height) this.reset(); }
             draw() {
@@ -404,20 +460,14 @@
                 ctx.fill(); ctx.restore();
             }
         }
-        for (let i = 0; i < 40; i++) leaves.push(new Leaf());
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); leaves.forEach(leaf => { leaf.update(); leaf.draw(); }); requestAnimationFrame(animate); }
+        for (let i = 0; i < 30; i++) leaves.push(new Leaf());
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); leaves.forEach(l => { l.update(); l.draw(); }); requestAnimationFrame(animate); }
         animate();
 
+        // --- 4. UI HELPERS ---
         function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
-
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('active'); }
-                else { entry.target.classList.remove('active'); }
-            });
-        }, observerOptions);
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        const obs = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), {threshold: 0.1});
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     </script>
 </body>
 </html>
