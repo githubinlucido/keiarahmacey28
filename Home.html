@@ -260,6 +260,10 @@
     </style>
 </head>
 <body id="pageBody">
+    <!-- The 'hidden' attribute ensures it doesn't take up any space -->
+<audio id="bgMusic" loop hidden>
+    <source src="birthday_song.mp3" type="audio/mpeg">
+</audio>
     <canvas id="leafCanvas"></canvas>
 
     <div class="mode-switch-container">
@@ -493,5 +497,25 @@
         const obs = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), {threshold: 0.1});
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     </script>
+    <script>
+    // This function attempts to play the music
+    function playBackgroundMusic() {
+        const audio = document.getElementById('bgMusic');
+        audio.play().catch(error => {
+            // This catches errors if the browser still blocks it
+            console.log("Autoplay prevented. Music will start on next interaction.");
+        });
+        
+        // Remove the listeners once the music starts so they don't run again
+        document.removeEventListener('click', playBackgroundMusic);
+        document.removeEventListener('touchstart', playBackgroundMusic);
+        document.removeEventListener('scroll', playBackgroundMusic);
+    }
+
+    // Listen for common user interactions
+    document.addEventListener('click', playBackgroundMusic);
+    document.addEventListener('touchstart', playBackgroundMusic);
+    document.addEventListener('scroll', playBackgroundMusic);
+</script>
 </body>
 </html>
