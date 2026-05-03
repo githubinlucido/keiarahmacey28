@@ -496,28 +496,25 @@
         function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
         const obs = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), {threshold: 0.1});
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-
     </script>
     <script>
     const audio = document.getElementById('bgMusic');
-
-    function startMusic() {
-        audio.play().then(() => {
-            // Success! Remove listeners so they don't fire again
-            ['click', 'touchstart', 'scroll'].forEach(event => 
-                document.removeEventListener(event, startMusic)
-            );
-        }).catch(error => {
-            console.log("Playback blocked; waiting for user interaction.");
-        });
-    }
-
-    // Assign listeners for any user movement or click
-    ['click', 'touchstart', 'scroll'].forEach(event => 
-        document.addEventListener(event, startMusic)
-    );
-</script>
     
+    // This function will attempt to play as soon as the user moves
+    const playOnMove = () => {
+        audio.play().then(() => {
+            // Once playing, stop listening for these events
+            window.removeEventListener('scroll', playOnMove);
+            window.removeEventListener('click', playOnMove);
+            window.removeEventListener('touchstart', playOnMove);
+        }).catch(error => {
+            // Autoplay was still blocked, waiting for a click
+        });
+    };
+
+    window.addEventListener('scroll', playOnMove);
+    window.addEventListener('click', playOnMove);
+    window.addEventListener('touchstart', playOnMove);
+</script>
 </body>
 </html>
