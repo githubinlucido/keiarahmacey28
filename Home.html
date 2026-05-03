@@ -496,9 +496,9 @@
         function toggleNightMode() { document.getElementById('pageBody').classList.toggle('night-mode'); }
         const obs = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('active', e.isIntersecting)), {threshold: 0.1});
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    </script>
-    <script>
-    // This function attempts to play the music
+
+
+          // This function attempts to play the music
     function playBackgroundMusic() {
         const audio = document.getElementById('bgMusic');
         audio.play().catch(error => {
@@ -516,6 +516,7 @@
     document.addEventListener('click', playBackgroundMusic);
     document.addEventListener('touchstart', playBackgroundMusic);
     document.addEventListener('scroll', playBackgroundMusic);
-</script>
+    </script>
+    
 </body>
 </html>
